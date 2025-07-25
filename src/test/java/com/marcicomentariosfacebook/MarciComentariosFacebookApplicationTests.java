@@ -1,0 +1,13 @@
+package com.marcicomentariosfacebook;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MarciComentariosFacebookApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}

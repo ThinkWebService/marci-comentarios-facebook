@@ -1,0 +1,1342 @@
+{
+    "posts": {
+        "data": [
+            {
+                "id": "763079420215588_122098044554954170",
+                "message": "lista de imagenes",
+                "full_picture": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/518399693_122098044350954170_6464004645497181574_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=iOur-MTqcokQ7kNvwGPpjYs&_nc_oc=AdnPPXI5wJstlAtNkRqMwoMYk9ZRGNf1erZKZIcVkrvLBRumXALkFjhVNohM1ZQEiuY&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfQxHJ3I3fVYDiFyABi0GMtnrqrVkVz1qm-IewtluOjCQg&oe=68849251",
+                "permalink_url": "https://www.facebook.com/122094775412954170/posts/122098044554954170",
+                "created_time": "2025-07-21T20:16:46+0000",
+                "status_type": "added_photos",
+                "attachments": {
+                    "data": [
+                        {
+                            "subattachments": {
+                                "data": [
+                                    {
+                                        "media_type": "photo",
+                                        "media": {
+                                            "image": {
+                                                "height": 250,
+                                                "src": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/518399693_122098044350954170_6464004645497181574_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=iOur-MTqcokQ7kNvwGPpjYs&_nc_oc=AdnPPXI5wJstlAtNkRqMwoMYk9ZRGNf1erZKZIcVkrvLBRumXALkFjhVNohM1ZQEiuY&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfQxHJ3I3fVYDiFyABi0GMtnrqrVkVz1qm-IewtluOjCQg&oe=68849251",
+                                                "width": 400
+                                            }
+                                        },
+                                        "url": "https://www.facebook.com/photo.php?fbid=122098044338954170&set=a.122098043108954170&type=3",
+                                        "type": "photo",
+                                        "target": {
+                                            "id": "122098044338954170",
+                                            "url": "https://www.facebook.com/photo.php?fbid=122098044338954170&set=a.122098043108954170&type=3"
+                                        }
+                                    },
+                                    {
+                                        "media_type": "photo",
+                                        "media": {
+                                            "image": {
+                                                "height": 400,
+                                                "src": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/521562166_122098044344954170_1168525218652672103_n.webp?stp=dst-jpg_tt6&_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_ohc=7GrRZsrIjMUQ7kNvwFc1uAa&_nc_oc=Adl8TCDaOWNeMNrJT0KXr9Fs-ajDUwTi0n91JOHaJ5ah0WmzG-lY6teOyN0Fo1sLCvo&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfSlKKGeNrl6-58FS-vYGZQonaxlyJjAwz_FmdeI8Mql6A&oe=68847443",
+                                                "width": 600
+                                            }
+                                        },
+                                        "url": "https://www.facebook.com/photo.php?fbid=122098044326954170&set=a.122098043108954170&type=3",
+                                        "type": "photo",
+                                        "target": {
+                                            "id": "122098044326954170",
+                                            "url": "https://www.facebook.com/photo.php?fbid=122098044326954170&set=a.122098043108954170&type=3"
+                                        }
+                                    },
+                                    {
+                                        "media_type": "video",
+                                        "media": {
+                                            "image": {
+                                                "height": 360,
+                                                "src": "https://scontent.fcue3-1.fna.fbcdn.net/v/t15.5256-10/521566705_1518212962676378_2055308806386893576_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=282d23&_nc_ohc=TTQBH1qq3rsQ7kNvwH15Rmm&_nc_oc=Admo4KZTBlPvkeXB6orbxCN_8pwCCcTJismed5PfWUQnuCm52FX_FHcVo3-5CnTJU78&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfQGfjiRS4xScqCWnXdWZ6qcPejkG8V3NtfTCzNwY6CotQ&oe=6884A790",
+                                                "width": 640
+                                            },
+                                            "source": "https://scontent.fcue3-1.fna.fbcdn.net/o1/v/t2/f2/m412/AQOHFgIpXHTCVNLCHYiEyCykjiQLtn9li55wTxNRN2AY88kmoWanZgWn7EcA0GT1s_ZnGqLuGmj9zzK_WVft890p-i7JGwmFuKWpTuSK1g.mp4?_nc_cat=106&_nc_oc=AdksHtG2Je1TVP_C6QpGK-RiILw6u0KE-LYvmglQ7nfXHneHwo0AUAN75mD6L81lacA&_nc_sid=8bf8fe&_nc_ht=scontent.fcue3-1.fna.fbcdn.net&_nc_ohc=HM6pu4bOTu4Q7kNvwGZ13_l&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuNjQwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6NDEwMzc0MTQ2NjYxMDg4MCwidmlfdXNlY2FzZV9pZCI6MTAxMjIsImR1cmF0aW9uX3MiOjExLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_zt=28&oh=00_AfRxIXDbtKhf2UoRS8JXoiOMUCO4VybTKCrIwvShjaUA1A&oe=68848E8C"
+                                        },
+                                        "url": "https://www.facebook.com/122094775412954170/videos/603568922810926",
+                                        "type": "video",
+                                        "target": {
+                                            "id": "603568922810926",
+                                            "url": "https://www.facebook.com/122094775412954170/videos/603568922810926"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "reactions": {
+                    "data": [
+                        {
+                            "id": "9857935820998879",
+                            "name": "David Guambaña",
+                            "type": "HAHA"
+                        }
+                    ],
+                    "paging": {
+                        "cursors": {
+                            "before": "QVFGbWhmNzE4NmdNV1lqUVdYNUpmOXI3dGRlUW5tX3hyNlQ4Tm5iUEtNODB0RGkzWjl4MkRhSTRfNHhWN1QxRF81YTdDeElzVW9MWEp6Wkl1X2FrTFhjc0lR",
+                            "after": "QVFGbU9XLTBiLXY1bmxiZAldKcEN1TlNpZA09sckJpYlBJWVBob1pDRF9lbTl3eVRPelJicXhIZAGVXQmdlVWotWWFwa3g1NUtnN2RYdGF1c2p0aXNYMWZALTFR3"
+                        }
+                    },
+                    "summary": {
+                        "total_count": 2,
+                        "viewer_reaction": "LIKE"
+                    }
+                },
+                "comments": {
+                    "data": [
+                        {
+                            "id": "122098044554954170_1038643681436140",
+                            "message": "comentario a lista de imagenes",
+                            "created_time": "2025-07-21T21:38:15+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122098044554954170_633727729157304",
+                                        "message": "Respuesta a comentario desde automatico",
+                                        "created_time": "2025-07-21T21:38:20+0000",
+                                        "from": {
+                                            "name": "Consola Retro",
+                                            "id": "1699940356976238"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbVl6TjFmZA0hqeS1mUjY5bHJYZAWYyc1NBZAk1Ca2hKcHExbnN3clctdWxqOUYtWG9XM2I4NFlJWGhITF9HUHRTX1p3TWdXdW0xdG5sWUJfOU4xMEdSQ3Rn",
+                                        "after": "QVFGbVl6TjFmZA0hqeS1mUjY5bHJYZAWYyc1NBZAk1Ca2hKcHExbnN3clctdWxqOUYtWG9XM2I4NFlJWGhITF9HUHRTX1p3TWdXdW0xdG5sWUJfOU4xMEdSQ3Rn"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122098044554954170_592682597254443",
+                            "message": "comento a 2 imagenes",
+                            "created_time": "2025-07-21T20:45:50+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [
+                                    {
+                                        "id": "9857935820998879",
+                                        "name": "David Guambaña",
+                                        "type": "LIKE"
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbW9aQXY2VEt1ZAHJnN0VvUVdYRU5SaTZAYcnBteS0zTE9fX2tBeWMwYVlGd3YtaE5vLXU3cnFzOXhOcThMaHFvWFVHbmFJeGx0ZAER2NGJfbGNPRklJckZAn",
+                                        "after": "QVFGbW9aQXY2VEt1ZAHJnN0VvUVdYRU5SaTZAYcnBteS0zTE9fX2tBeWMwYVlGd3YtaE5vLXU3cnFzOXhOcThMaHFvWFVHbmFJeGx0ZAER2NGJfbGNPRklJckZAn"
+                                    }
+                                },
+                                "summary": {
+                                    "total_count": 1,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122098044554954170_1066341615174992",
+                                        "message": "Respuesta a comentario desde automatico",
+                                        "created_time": "2025-07-21T20:45:57+0000",
+                                        "from": {
+                                            "name": "Consola Retro",
+                                            "id": "1699940356976238"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbWZA2X2ZAYTUdoZAkVjWTUtTTlaRGJEX2FaVUtSajdwVlhrT0MzOTY1SGNXSF9MYzM2SDU3YTd0eFJTdWs0WFNubEx5bHV0ZAW1NTmhpRUZABR0pVWjVJalFR",
+                                        "after": "QVFGbWZA2X2ZAYTUdoZAkVjWTUtTTlaRGJEX2FaVUtSajdwVlhrT0MzOTY1SGNXSF9MYzM2SDU3YTd0eFJTdWs0WFNubEx5bHV0ZAW1NTmhpRUZABR0pVWjVJalFR"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        }
+                    ],
+                    "paging": {
+                        "cursors": {
+                            "before": "MgZDZD",
+                            "after": "MQZDZD"
+                        }
+                    },
+                    "summary": {
+                        "order": "ranked",
+                        "total_count": 2,
+                        "can_comment": true
+                    }
+                }
+            },
+            {
+                "id": "763079420215588_122098043126954170",
+                "message": "publicación # 3",
+                "full_picture": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/518346812_122098038656954170_8123098783564756904_n.jpg?stp=dst-jpg_s720x720_tt6&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=nmBBKe1vhIAQ7kNvwHrQCsz&_nc_oc=Adn-FcjHeZr2fdC54U3lTlmZz5E-QaGD1XOmj5_tnWFGHCt1rmdj8aBESd7NS8xhRts&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfTxK1Le4CEd98J_9LDlubR0B7IRQH-VyOf-esDvbclZEA&oe=68847F86",
+                "permalink_url": "https://www.facebook.com/122094775412954170/posts/122098043126954170",
+                "created_time": "2025-07-21T20:13:13+0000",
+                "story": "Test - TWS2 se siente feliz.",
+                "status_type": "added_photos",
+                "attachments": {
+                    "data": [
+                        {
+                            "subattachments": {
+                                "data": [
+                                    {
+                                        "media_type": "photo",
+                                        "media": {
+                                            "image": {
+                                                "height": 720,
+                                                "src": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/518346812_122098038656954170_8123098783564756904_n.jpg?stp=dst-jpg_s720x720_tt6&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=nmBBKe1vhIAQ7kNvwHrQCsz&_nc_oc=Adn-FcjHeZr2fdC54U3lTlmZz5E-QaGD1XOmj5_tnWFGHCt1rmdj8aBESd7NS8xhRts&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfTxK1Le4CEd98J_9LDlubR0B7IRQH-VyOf-esDvbclZEA&oe=68847F86",
+                                                "width": 720
+                                            }
+                                        },
+                                        "url": "https://www.facebook.com/photo.php?fbid=122098038650954170&set=a.122098043108954170&type=3",
+                                        "type": "photo",
+                                        "target": {
+                                            "id": "122098038650954170",
+                                            "url": "https://www.facebook.com/photo.php?fbid=122098038650954170&set=a.122098043108954170&type=3"
+                                        }
+                                    },
+                                    {
+                                        "media_type": "video",
+                                        "media": {
+                                            "image": {
+                                                "height": 360,
+                                                "src": "https://scontent.fcue3-1.fna.fbcdn.net/v/t15.5256-10/521003007_1474906713676293_7446392099718658600_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=282d23&_nc_ohc=qbxuifAyxzgQ7kNvwE72G-Y&_nc_oc=Adkyl1U4fzCCIl8NEKEohKJjmWPyzXIr5QeGMZ_sYvW9ksxlyzlJn_ol8EJrqrCuF-o&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfRrAqK-u_XKBohrMC1gM_ICUelY49MK9CBLxXdFz-SdXQ&oe=68847B34",
+                                                "width": 640
+                                            },
+                                            "source": "https://scontent.fcue3-1.fna.fbcdn.net/o1/v/t2/f2/m412/AQNA8XnROktU0S2yYsOEncX-4ZoqTANw1CMnvTlAjttOngubbt3Wgx_lFmQ9uUwDoWRtnww4Cfik-zf5VOBw4tqzEDZIzII-ck0kim3XhQ.mp4?_nc_cat=100&_nc_oc=AdkGPvxQd6u4RWxs8JlwLng1LaOvW2A955rLZrhsO55qvg3ol1eSPnvuuhHnMtKR2Ig&_nc_sid=8bf8fe&_nc_ht=scontent.fcue3-1.fna.fbcdn.net&_nc_ohc=LkpCMFXLmNsQ7kNvwHQdqzi&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuNjQwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6NzE3NzM1NDM0NDY1NTA0LCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6MTEsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_zt=28&oh=00_AfSB3UHfbBkUaNQy0sMAHDswiplWCwDCpfh8x8-oysOZSw&oe=6884958E"
+                                        },
+                                        "url": "https://www.facebook.com/122094775412954170/videos/1511729286856101",
+                                        "type": "video",
+                                        "target": {
+                                            "id": "1511729286856101",
+                                            "url": "https://www.facebook.com/122094775412954170/videos/1511729286856101"
+                                        }
+                                    },
+                                    {
+                                        "media_type": "photo",
+                                        "media": {
+                                            "image": {
+                                                "height": 720,
+                                                "src": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/519141240_122098043060954170_4204151807721529430_n.jpg?stp=dst-jpg_s720x720_tt6&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=_d-R_R1qQyIQ7kNvwFgsgGY&_nc_oc=Adl9RnLj028j_bHMp1tPT5pP6qAMxUdi5j-4hcaCPh2yo_RldcyETSk3wqgzt1PSIcw&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfQIJc2htS094VGIBXNDk90JtBZwKuzXl9XMPnZajWmKHQ&oe=68847FAD",
+                                                "width": 720
+                                            }
+                                        },
+                                        "url": "https://www.facebook.com/photo.php?fbid=122098043054954170&set=a.122098043108954170&type=3",
+                                        "type": "photo",
+                                        "target": {
+                                            "id": "122098043054954170",
+                                            "url": "https://www.facebook.com/photo.php?fbid=122098043054954170&set=a.122098043108954170&type=3"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "reactions": {
+                    "data": [],
+                    "summary": {
+                        "total_count": 0,
+                        "viewer_reaction": "NONE"
+                    }
+                },
+                "comments": {
+                    "data": [],
+                    "summary": {
+                        "order": "chronological",
+                        "total_count": 0,
+                        "can_comment": true
+                    }
+                }
+            },
+            {
+                "id": "763079420215588_122095428158954170",
+                "message": "Publicación #2\n👋",
+                "permalink_url": "https://www.facebook.com/122094775412954170/posts/122095428158954170",
+                "created_time": "2025-07-17T20:46:42+0000",
+                "story": "Test - TWS2 ha actualizado  su estado.",
+                "status_type": "mobile_status_update",
+                "reactions": {
+                    "data": [],
+                    "paging": {
+                        "cursors": {
+                            "before": "QVFGbXNlQ29lak5vbnNfUVNlMHdjWUdFRGtFSE5wMW9welZALS1JrYU53ZA0JMRWNiWEIyYjFha25DbTF3S3lrcWNiYlJMMDR2NFdKTEhCZAXJmVE53d05lcS1R",
+                            "after": "QVFGbXNlQ29lak5vbnNfUVNlMHdjWUdFRGtFSE5wMW9welZALS1JrYU53ZA0JMRWNiWEIyYjFha25DbTF3S3lrcWNiYlJMMDR2NFdKTEhCZAXJmVE53d05lcS1R"
+                        }
+                    },
+                    "summary": {
+                        "total_count": 1,
+                        "viewer_reaction": "HAHA"
+                    }
+                },
+                "comments": {
+                    "data": [
+                        {
+                            "id": "122095428158954170_786178927310873",
+                            "message": "Respuesta a comentario",
+                            "created_time": "2025-07-18T22:54:59+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122095428158954170_706149395568608",
+                            "message": "",
+                            "created_time": "2025-07-17T21:13:09+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122095428158954170_725166686923832",
+                            "message": "buenos días",
+                            "created_time": "2025-07-18T15:48:20+0000",
+                            "from": {
+                                "name": "Juan Andres Caisapanta",
+                                "id": "9542001905903296"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122095428158954170_613905427998281",
+                                        "message": "Respuesta a comentario desde back",
+                                        "created_time": "2025-07-18T15:48:25+0000",
+                                        "from": {
+                                            "name": "Test - TWS2",
+                                            "id": "763079420215588"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbW5BZAEdvMVFNWlJ3XzY5TE9lQmlDUWlLbHppdXNjV1JHUF9HU1NnVEh1VnJQaTVYLUdUNnE4clZAmREtLOTM5eEtBR0hxYldSMXJfYkdTcTcwOTF2Wnhn",
+                                        "after": "QVFGbW5BZAEdvMVFNWlJ3XzY5TE9lQmlDUWlLbHppdXNjV1JHUF9HU1NnVEh1VnJQaTVYLUdUNnE4clZAmREtLOTM5eEtBR0hxYldSMXJfYkdTcTcwOTF2Wnhn"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122095428158954170_1949595329189150",
+                            "message": "",
+                            "created_time": "2025-07-17T21:12:33+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        }
+                    ],
+                    "paging": {
+                        "cursors": {
+                            "before": "NAZDZD",
+                            "after": "MQZDZD"
+                        }
+                    },
+                    "summary": {
+                        "order": "ranked",
+                        "total_count": 4,
+                        "can_comment": true
+                    }
+                }
+            },
+            {
+                "id": "763079420215588_122094779084954170",
+                "message": "Post #1😎",
+                "permalink_url": "https://www.facebook.com/122094775412954170/posts/122094779084954170",
+                "created_time": "2025-07-16T18:26:27+0000",
+                "story": "Test - TWS2 está en Azuay Province, Ecuador.",
+                "status_type": "mobile_status_update",
+                "reactions": {
+                    "data": [
+                        {
+                            "id": "9857935820998879",
+                            "name": "David Guambaña",
+                            "type": "LIKE"
+                        }
+                    ],
+                    "paging": {
+                        "cursors": {
+                            "before": "QVFGbXhhcTAtQ2luVDk3a0dOQ1FkTlhLY0MtTWZAvZA2lBYjlrRWQ3Tm9NN2NXaTJpeTZAFeldzcjZAqUkI3VVpIcjYtcUtiY2VxTmt3S3E1NXltOG1vUHNmV1R3",
+                            "after": "QVFGbXhhcTAtQ2luVDk3a0dOQ1FkTlhLY0MtTWZAvZA2lBYjlrRWQ3Tm9NN2NXaTJpeTZAFeldzcjZAqUkI3VVpIcjYtcUtiY2VxTmt3S3E1NXltOG1vUHNmV1R3"
+                        }
+                    },
+                    "summary": {
+                        "total_count": 1,
+                        "viewer_reaction": "NONE"
+                    }
+                },
+                "comments": {
+                    "data": [
+                        {
+                            "id": "122094779084954170_648396480845176",
+                            "message": "Holaaa",
+                            "created_time": "2025-07-18T14:36:27+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1639471700069326",
+                            "message": "respuesta a comentario",
+                            "created_time": "2025-07-16T19:15:33+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [
+                                    {
+                                        "id": "9857935820998879",
+                                        "name": "David Guambaña",
+                                        "type": "LOVE"
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbWlLOWJxZAW1OLV9uWnMtLVpBeVhPbkdLakd0cXhrTWlDRkd0REgwX2N1SzdWcFNqeFZAReG5wbXA0UXEzRHZACdkU2LUlQaVdhdm14Q19kbjNESF9RZA1h3",
+                                        "after": "QVFGbTlNRmxQblAxaDdubVY1VnRPWURlU2VDUEIyME1nZAGlfdGdHbDRzRWVSR1BwWWZAJU2VsWVJpR3JNYVV6R0xpYWZAlTmRwdnhyMmVlUEd1aV91ZA0NVdHZAB"
+                                    }
+                                },
+                                "summary": {
+                                    "total_count": 2,
+                                    "viewer_reaction": "LIKE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_1079856030278888",
+                                        "message": "Test - TWS2 ok",
+                                        "created_time": "2025-07-16T20:14:15+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [
+                                                {
+                                                    "id": "9857935820998879",
+                                                    "name": "David Guambaña",
+                                                    "type": "HAHA"
+                                                }
+                                            ],
+                                            "paging": {
+                                                "cursors": {
+                                                    "before": "QVFGbVhnV0ZAjQk5lNktSYkdFZAl9wdVktUUk5US1LYVFPSTVTOFBMZA2NYYU40aXhJMHBwUkhQMXAzeFE4MUFXVlFucnQ5dHRIVVlUZAW5sa2dLN2dvbC01QlBB",
+                                                    "after": "QVFGbVhnV0ZAjQk5lNktSYkdFZAl9wdVktUUk5US1LYVFPSTVTOFBMZA2NYYU40aXhJMHBwUkhQMXAzeFE4MUFXVlFucnQ5dHRIVVlUZAW5sa2dLN2dvbC01QlBB"
+                                                }
+                                            },
+                                            "summary": {
+                                                "total_count": 1,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_1071513511219496",
+                                        "message": "Si",
+                                        "created_time": "2025-07-16T21:37:40+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [
+                                                {
+                                                    "id": "9857935820998879",
+                                                    "name": "David Guambaña",
+                                                    "type": "CARE"
+                                                }
+                                            ],
+                                            "paging": {
+                                                "cursors": {
+                                                    "before": "QVFGbUpvRVBib1NXVVlDUzJTMmk2ZAlB3MVI5TDN0QXoyMDg2bkZA2STlIREVMRnpKYXR0dmc0VmVCWXloVkhSaWthSmpOanozamFpbjJFTzJyOTJSM1dCX3d3",
+                                                    "after": "QVFGbUpvRVBib1NXVVlDUzJTMmk2ZAlB3MVI5TDN0QXoyMDg2bkZA2STlIREVMRnpKYXR0dmc0VmVCWXloVkhSaWthSmpOanozamFpbjJFTzJyOTJSM1dCX3d3"
+                                                }
+                                            },
+                                            "summary": {
+                                                "total_count": 1,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_1488575409152816",
+                                        "message": "Vale",
+                                        "created_time": "2025-07-16T21:38:40+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [
+                                                {
+                                                    "id": "9857935820998879",
+                                                    "name": "David Guambaña",
+                                                    "type": "WOW"
+                                                }
+                                            ],
+                                            "paging": {
+                                                "cursors": {
+                                                    "before": "QVFGbVBHR0ZALbHp0SUVHNzYxdnBOSVZABc3JXaV9nWHFzY0ZANSFJRdDlRMFc5R3RsSTBjQ1Y3aU5iMmtNOW9IVmhZANVRFeGJOTFRYYk5BWm1fVUlzZAnFVN19n",
+                                                    "after": "QVFGbVBHR0ZALbHp0SUVHNzYxdnBOSVZABc3JXaV9nWHFzY0ZANSFJRdDlRMFc5R3RsSTBjQ1Y3aU5iMmtNOW9IVmhZANVRFeGJOTFRYYk5BWm1fVUlzZAnFVN19n"
+                                                }
+                                            },
+                                            "summary": {
+                                                "total_count": 1,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_2066625170530200",
+                                        "message": "Ok",
+                                        "created_time": "2025-07-16T21:38:54+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [
+                                                {
+                                                    "id": "9857935820998879",
+                                                    "name": "David Guambaña",
+                                                    "type": "LIKE"
+                                                }
+                                            ],
+                                            "paging": {
+                                                "cursors": {
+                                                    "before": "QVFGbTZAqbFNSaUgxTmxyT3hybkFIN1FPTDVkeFNQVmN3NWZASVVRGaGhuVEg2QUJkcTY1UTZAjeHdwbFpqd1pndkd2VnlwM1dMSlpMdHFBY2VBNjB6U2ROalBR",
+                                                    "after": "QVFGbTZAqbFNSaUgxTmxyT3hybkFIN1FPTDVkeFNQVmN3NWZASVVRGaGhuVEg2QUJkcTY1UTZAjeHdwbFpqd1pndkd2VnlwM1dMSlpMdHFBY2VBNjB6U2ROalBR"
+                                                }
+                                            },
+                                            "summary": {
+                                                "total_count": 1,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_588257124110074",
+                                        "message": "Si",
+                                        "created_time": "2025-07-16T21:39:03+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [
+                                                {
+                                                    "id": "9857935820998879",
+                                                    "name": "David Guambaña",
+                                                    "type": "SAD"
+                                                }
+                                            ],
+                                            "paging": {
+                                                "cursors": {
+                                                    "before": "QVFGbUlzVzh6ekpZAV1N4akdlZAExUREVJN01WNXlEVGR1NTFuZAnFqbjZAhLU1DMjhVZAlNlOG5JZAGw4TUFNTDNrcWJnVUJFYkU2eGpzNEdxQXRDdG1NdFZAhajd3",
+                                                    "after": "QVFGbUlzVzh6ekpZAV1N4akdlZAExUREVJN01WNXlEVGR1NTFuZAnFqbjZAhLU1DMjhVZAlNlOG5JZAGw4TUFNTDNrcWJnVUJFYkU2eGpzNEdxQXRDdG1NdFZAhajd3"
+                                                }
+                                            },
+                                            "summary": {
+                                                "total_count": 1,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_1260782388384272",
+                                        "message": "No",
+                                        "created_time": "2025-07-16T21:39:26+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_746136914569764",
+                                        "message": "¡Gracias por comentar!",
+                                        "created_time": "2025-07-17T17:53:47+0000",
+                                        "from": {
+                                            "name": "Test - TWS2",
+                                            "id": "763079420215588"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbWZACUEJldERTYWlJcTJ1MmpObzhQMC1aNW1ycjdKNFBfMEhFb0F1blBVdjFVUEl5dDhhS1NkMTZA6d1p4eGx6NldsbVdKdS1HY2NRbTNfT1h1SHplbURB",
+                                        "after": "QVFGbTh3RGhvc0hXVEVLTXJEak00c2IyQm1aTVhXTHhsUk5xNjRxaHlLUWtndlNLSlFWWnp1Ylc5ZA25ZAMGs5QnFPZAmtMYjlObm9rQ19oY0dyWkt1bTJQeTN3"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 7,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1868537617055866",
+                            "message": "",
+                            "created_time": "2025-07-18T14:59:14+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_2242054049580185",
+                                        "message": "Respuesta a comentario desde back",
+                                        "created_time": "2025-07-18T14:59:18+0000",
+                                        "from": {
+                                            "name": "Test - TWS2",
+                                            "id": "763079420215588"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbWlWTXc0cGlvdnV5VWFfOGk1M3FSRTNnakIzNWJzWWZAib1lncXBZAZA3JDd3RDcjJITzk2dXF0cThBQi10S0JTd3MtNFlTZAElLU0lkNHp1cHM4ZA2NnN2VR",
+                                        "after": "QVFGbWlWTXc0cGlvdnV5VWFfOGk1M3FSRTNnakIzNWJzWWZAib1lncXBZAZA3JDd3RDcjJITzk2dXF0cThBQi10S0JTd3MtNFlTZAElLU0lkNHp1cHM4ZA2NnN2VR"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1283131033413681",
+                            "message": "",
+                            "created_time": "2025-07-18T14:58:18+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_1267924731647535",
+                                        "message": "Respuesta a comentario desde back",
+                                        "created_time": "2025-07-18T14:58:21+0000",
+                                        "from": {
+                                            "name": "Test - TWS2",
+                                            "id": "763079420215588"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbXFqQWNCN2V1OWFMdU1CTWRyT2N3a0ZAESXN1Um9SNnc4LUVWNzFjOU5tZADVlajVTSTEwWFlwYV9qZA0hwTW8zMF92WV9TM2pHdlpRQ2gwUDVHdVctZAExB",
+                                        "after": "QVFGbXFqQWNCN2V1OWFMdU1CTWRyT2N3a0ZAESXN1Um9SNnc4LUVWNzFjOU5tZADVlajVTSTEwWFlwYV9qZA0hwTW8zMF92WV9TM2pHdlpRQ2gwUDVHdVctZAExB"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_724622216855586",
+                            "message": "Buenas",
+                            "created_time": "2025-07-18T14:57:06+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_1273534301147353",
+                                        "message": "Respuesta a comentario desde back",
+                                        "created_time": "2025-07-18T14:57:09+0000",
+                                        "from": {
+                                            "name": "Test - TWS2",
+                                            "id": "763079420215588"
+                                        },
+                                        "reactions": {
+                                            "data": [
+                                                {
+                                                    "id": "9857935820998879",
+                                                    "name": "David Guambaña",
+                                                    "type": "LIKE"
+                                                }
+                                            ],
+                                            "paging": {
+                                                "cursors": {
+                                                    "before": "QVFGbXJNU1pRWWRfUUs2bEdxcmU0NlB5TXplRlFta1I2MlVLc0Q3eXBlM0U5YWpEYVB6dF9tcklEZAlA0WUN1NW5CeU5jT0E0ekhMNUVyenVKX0I2QlhHRk9R",
+                                                    "after": "QVFGbXJNU1pRWWRfUUs2bEdxcmU0NlB5TXplRlFta1I2MlVLc0Q3eXBlM0U5YWpEYVB6dF9tcklEZAlA0WUN1NW5CeU5jT0E0ekhMNUVyenVKX0I2QlhHRk9R"
+                                                }
+                                            },
+                                            "summary": {
+                                                "total_count": 1,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbThTNUt5c3Y1Y0QzVkZAlclZAUZAXQ3akc3SWdta0E0eWNVc05CdFREajhEaWcyc0xUdl9neWNRdUhWeXY1N1VuNmpjOV9wN21USHhZAX1ZAKeUplUTBhREJ3",
+                                        "after": "QVFGbThTNUt5c3Y1Y0QzVkZAlclZAUZAXQ3akc3SWdta0E0eWNVc05CdFREajhEaWcyc0xUdl9neWNRdUhWeXY1N1VuNmpjOV9wN21USHhZAX1ZAKeUplUTBhREJ3"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_640700862375962",
+                            "message": "Hola que tal",
+                            "created_time": "2025-07-18T14:55:00+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_1010363731172205",
+                                        "message": "Respuesta a comentario desde back",
+                                        "created_time": "2025-07-18T14:55:04+0000",
+                                        "from": {
+                                            "name": "Test - TWS2",
+                                            "id": "763079420215588"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "id": "122094779084954170_724750636853363",
+                                        "message": "Test - TWS2 a cuánto?",
+                                        "created_time": "2025-07-18T14:55:59+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbWk3RjdFeEp6bHRUOXA5cUJ6S0VvMmxIcDNOMjRGVDNJU01lbG12T2E3dnBsMXc2dlFaejdtVmFaOFJsc2FiOFM0V1o3RVNrX2p1VUlKbDRGVlBKbl9n",
+                                        "after": "QVFGbTBUNlJKN1dqckVWVjJlVjh4dXc4MWZAmNUN2aWlfZAlQzYzJXbmQ0LW92TkExbURrVnc0eXd5ZA01PejRzUGdTT25hMEYzTHBBeWJaSklzVDVobFZAYdjBR"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 2,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1204852631654856",
+                            "message": "comentario #1",
+                            "created_time": "2025-07-16T18:53:51+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbVE5MHJTZAzNzN2JBV0xmYzBYS241ckpwTFdyVGpIbVFpMmFjSnZAhWlpvMWZAZAdXBlWkdWc29FUUM5WUdleG5MbXNwendZAOW1qVC1CcTlPZAnJGdDRhVjV3",
+                                        "after": "QVFGbVE5MHJTZAzNzN2JBV0xmYzBYS241ckpwTFdyVGpIbVFpMmFjSnZAhWlpvMWZAZAdXBlWkdWc29FUUM5WUdleG5MbXNwendZAOW1qVC1CcTlPZAnJGdDRhVjV3"
+                                    }
+                                },
+                                "summary": {
+                                    "total_count": 1,
+                                    "viewer_reaction": "LIKE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_24966920039574481",
+                                        "message": "Ok",
+                                        "created_time": "2025-07-16T21:39:47+0000",
+                                        "from": {
+                                            "name": "David Guambaña",
+                                            "id": "9857935820998879"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbUF2d1hRSjBPR2ZApSFVrNGhVTllTMDN1NWdfRGY4RmFlTUJ2WHhGaUstRU5meFVWV0o3SUdlSzNZAUTBMQlYtSmJENGF0dGVZAczhobjg1UzZArSDhxNG1R",
+                                        "after": "QVFGbUF2d1hRSjBPR2ZApSFVrNGhVTllTMDN1NWdfRGY4RmFlTUJ2WHhGaUstRU5meFVWV0o3SUdlSzNZAUTBMQlYtSmJENGF0dGVZAczhobjg1UzZArSDhxNG1R"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_24337724985868836",
+                            "message": "¡OTRO COMENTARIO",
+                            "created_time": "2025-07-17T18:21:30+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1053956516845506",
+                            "message": "¡OTRO COMENTARIO",
+                            "created_time": "2025-07-17T18:17:54+0000",
+                            "from": {
+                                "name": "Test - TWS2",
+                                "id": "763079420215588"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1297506201734487",
+                            "message": "Otro comentario",
+                            "created_time": "2025-07-16T23:42:25+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1442683343549957",
+                            "message": "Ok",
+                            "created_time": "2025-07-16T23:28:26+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_744367138002411",
+                            "message": "Mensaje enviando gif",
+                            "created_time": "2025-07-17T20:27:27+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1428384571620891",
+                            "message": "Mensaje enviando emoji",
+                            "created_time": "2025-07-17T20:27:43+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_749601090897540",
+                            "message": "Buenas",
+                            "created_time": "2025-07-16T23:18:22+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1090289486606879",
+                            "message": "Mensaje enviando avatar",
+                            "created_time": "2025-07-17T20:33:30+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_758487133308436",
+                            "message": "Prueba nueva",
+                            "created_time": "2025-07-16T23:39:48+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [
+                                    {
+                                        "id": "122094779084954170_1636995876860430",
+                                        "message": "David Guambaña prueba renueva",
+                                        "created_time": "2025-07-16T23:54:22+0000",
+                                        "from": {
+                                            "name": "William Martinez",
+                                            "id": "30665350349745099"
+                                        },
+                                        "reactions": {
+                                            "data": [],
+                                            "summary": {
+                                                "total_count": 0,
+                                                "viewer_reaction": "NONE"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "paging": {
+                                    "cursors": {
+                                        "before": "QVFGbUhrdUMwdWhKdDczZAXItVm94STRoR0J4c1B1b1RWRVY2bWpfNFdINWxzM1duZAXRSTEFGODFPTHIzT3VzUkdVa2VzVnl1SUFYRm1hcl85OFNvXzRaY3dn",
+                                        "after": "QVFGbUhrdUMwdWhKdDczZAXItVm94STRoR0J4c1B1b1RWRVY2bWpfNFdINWxzM1duZAXRSTEFGODFPTHIzT3VzUkdVa2VzVnl1SUFYRm1hcl85OFNvXzRaY3dn"
+                                    }
+                                },
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 1,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_944008654517671",
+                            "message": "Mensaje enviando imagen",
+                            "created_time": "2025-07-17T20:26:40+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_643680455409767",
+                            "message": "prueba w",
+                            "created_time": "2025-07-16T23:51:50+0000",
+                            "from": {
+                                "name": "William Martinez",
+                                "id": "30665350349745099"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        },
+                        {
+                            "id": "122094779084954170_1996613321145121",
+                            "message": "Hola",
+                            "created_time": "2025-07-17T20:25:02+0000",
+                            "from": {
+                                "name": "David Guambaña",
+                                "id": "9857935820998879"
+                            },
+                            "reactions": {
+                                "data": [],
+                                "summary": {
+                                    "total_count": 0,
+                                    "viewer_reaction": "NONE"
+                                }
+                            },
+                            "comments": {
+                                "data": [],
+                                "summary": {
+                                    "order": "chronological",
+                                    "total_count": 0,
+                                    "can_comment": true
+                                }
+                            }
+                        }
+                    ],
+                    "paging": {
+                        "cursors": {
+                            "before": "MTkZD",
+                            "after": "MQZDZD"
+                        }
+                    },
+                    "summary": {
+                        "order": "ranked",
+                        "total_count": 19,
+                        "can_comment": true
+                    }
+                }
+            },
+            {
+                "id": "763079420215588_122094753320954170",
+                "full_picture": "https://scontent.fcue3-1.fna.fbcdn.net/v/t39.30808-6/518376075_122113301486934240_2326110550019821209_n.jpg?stp=dst-jpg_s720x720_tt6&_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=KoiFDnR5APYQ7kNvwGEq3-z&_nc_oc=AdnJHcKdw4J1Q-pys0fyDUzP3fy8WHvP_4tl4oR8JbkoDgR60flXvnKPhOuCY03LBb0&_nc_zt=23&_nc_ht=scontent.fcue3-1.fna&edm=AJdBtusEAAAA&_nc_gid=Dq-VvzR-bkMsvjjaiTot_A&oh=00_AfRSznJ65Exq3jVt8ol7QQdeX9xQlzkYqFudRMM6PE6GjA&oe=688488AD",
+                "permalink_url": "https://www.facebook.com/122094775412954170/posts/122094753320954170?substory_index=2140039329854283",
+                "created_time": "2025-07-16T17:24:00+0000",
+                "story": "Test - TWS2 ha actualizado su foto del perfil.",
+                "status_type": "added_photos",
+                "reactions": {
+                    "data": [],
+                    "summary": {
+                        "total_count": 0,
+                        "viewer_reaction": "NONE"
+                    }
+                },
+                "comments": {
+                    "data": [],
+                    "summary": {
+                        "order": "chronological",
+                        "total_count": 0,
+                        "can_comment": true
+                    }
+                }
+            }
+        ],
+        "paging": {
+            "cursors": {
+                "before": "QVFGbUUybTVuR0NCLTFxWGxnRmtscW5UVUg3Q2R5ZAG1RQmxIYVB4QTFadUJ6U0MwYmZApZAXRfb1dfWDRsRWk5bi05ZAHEwYXNqNkRjSjZAieFRWTThtODVwX2FhMmIzMTMzR2pVZAW45S3l3bVJzR2pNS0tUM3F6bjU3S3h3WUdiUGJIeXRUNjZAhMGdOV3N6Rk5Xb1dUdnh6V1NfdGR0NmZA6emd4Q1dLbi1KaEFKNXlOSFR3Vms1UTAxZAEhTdmlxcnBnZATlsdDFuS0tzSTF0TjQ5UTVUXzk3dlhNUTBvWU5pb25YYTQxSmUxV1c4Ym5xUFBGaGRHc0xzTGJpM1J1VU5fX2s2RjJQUTZAYNk1HYzBtczE5VWJ3MG9UVldaRGdEbUlUblBQYVBfOUZABeXZAGRHdhQWtaVFNaNV81bm5KNmNTUU96dmp4ZAk9oaVhIT1ROOXYtRkVkOFhJR0lvbjlrQVJCMnFqOUxkdUhlbFFQdmRnVDN3SWFORXlodE9BdS11RWxrZAzhRNmNMTENPWGxDTnlWb0hxLWIxWm04emEtaUQwbFhlV0dMQmJsaFJGOE9EVUItT3lCYW5qU2dVblZAxOGVRaW1hQlBIVEJyR1NodXFET2RKUUZA1ckV4OHpMOFVXM3RMZAUF0czcwT2pKa0NlSHNxZAFZAqUzFqSlo1SDZAWdTBoc1l3ZA2NyQ3dHeXVQTE00MGZANbm81YUxFVnVKTXNLdG9TX1NLR3ItU1FfMnNqaXVJNnNXX0NCeWhmMEhtUVlnN09ZAVzl6OGFzbzRSSEdEcnNXdFN5T2t0Y3lYNm95d2xTUmRKOXQyLXhyeU9mUW5CZAVlUa29kVkZAObklGeGd3NFBUMkZASb3JqZAi1qaWl0Q1YzeldLNndHX0JXUDZAB",
+                "after": "QVFGbVdRRzFWbDgzUk5aYk9GeWhBUnZAxSWNUOF9qZAUF0WE5yN0JaeURBLXNoM3AweFJtN3VJOHMyeUNBX3ZARa1NCNU5fTEVpMVlnWEplVGE4dnNwSzE0V3pGa0hiS2dSTXh0QkxhanEtWFVHQjNXUmxCTlpuNnk4ZAFgtXzJyVzNBWk4ycWkzLU5kVjdLVEhzQzBOMkFNTUtPUjctZAFYwQS0yUDlnYkliTDJUQXYtenBCZAXJULVhMV2tmWnNIaUhDN3NfcGx5MWFjRWdFZA3BIdjNwZAFFESkdxUFg2bW1GdXE4WWZAURHJFbG1ZAalRFUWQ5cHVVRmNLTEZAaSjNlRzRLbmI2Tjl2YVBIczFOaURKRFJ6UTZAjUzI4aEMxQlRORjRGZAXV2RVplZA29NTnZAtcERnMUJoMGc2R25Vc05yMzFhekpqQmw3ZATI0SXJ3M3BPRUY5WXoxOW0wcUNpMVV5NGRWLXQ1dUl6LUhkUmNLS2ZAQdUpKWncxS09wcXBDNkZAOT0gzUldRVGxtUGZADU0VIVWl4SHcxQkxlQjRFV2tpMTVGRWJaRlROU0IxdVVydm1WN1dOeFJFNlhDYk53MmxDNjFLTmMwcVotZAkUyVUlxMVFNWkZAuQXp2eV9QcXV3Nm5fSEszWlpoNnNoQXNReHk2dHByT3lvSGhTQ2xFY01udUgzMm14WVJWUm9OaS1NbnhBZA0l3RXpMazRTaTl4VHYtX0NxRWI1RFNrN1dFaHlxVy1mSElJbGFzcjdnMlBxaWdlM2ZATS3NkaGUxbjFuZAURJSFhKSkg5YzZAETFRyR2pGX25VcGhsd0NaMWlCYjZAtNWtjRzNRZA2ExalNtbGpaRXVZAMzFhOWdrUnVtOXU4amtpaFd6ZAkFGTmlOMzlVbF82WmtuMEFSNWNKSVYzOElhUHZAJT2Rvd3ZAXYU5QZADNWYTJ4Wk5wZAWNKamJ1WnM1QVZAEZAkRLUDA0T3p5cjNZAbXBFdwZDZD"
+            }
+        }
+    },
+    "id": "763079420215588"
+}
