@@ -1,9 +1,10 @@
 package com.marcicomentariosfacebook.client.LHIA.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcicomentariosfacebook.client.LHIA.models.AuthResponse;
-import com.marcicomentariosfacebook.client.LHIA.models.RequestQuestionLhia;
-import com.marcicomentariosfacebook.client.LHIA.models.ResponseLhia;
+import com.marcicomentariosfacebook.client.LHIA.TokenProperties;
+import com.marcicomentariosfacebook.client.LHIA.dto.AuthResponse;
+import com.marcicomentariosfacebook.client.LHIA.dto.RequestQuestionLhia;
+import com.marcicomentariosfacebook.client.LHIA.dto.ResponseLhia;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +12,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.Map;
 
 @Data
 @Slf4j
@@ -25,34 +25,60 @@ public class ApiLhia implements ApiLhiaService {
 	private final WebClient.Builder webClient;
 	private final Environment env;
 	private final ObjectMapper objectMapper;
+	private final TokenProperties tokenProperties;
 
 	@Override
-	public Mono<AuthResponse> getToken() {
-		String urlToken = env.getProperty("lhia.token");
+	public Mono<String> getToken() {
 		return webClient.build()
 				.post()
-				.uri(urlToken)
+				.uri(tokenProperties.getUrl())
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.body(BodyInserters.fromFormData("username", tokenProperties.getUsername())
+						.with("password", tokenProperties.getPassword())
+						.with("client_id", tokenProperties.getClient_id())
+						.with("grant_type", tokenProperties.getGrant_type()))
 				.retrieve()
-				.bodyToMono(AuthResponse.class);
+				.bodyToMono(AuthResponse.class)
+				.map(AuthResponse::getAccess_token)
+				.onErrorResume(e -> {
+					log.error("Error al obtener token: {}", e.getMessage());
+					return Mono.empty();
+				});
 	}
 
 	@Override
-	public Mono<ResponseLhia> sendMesssageToLhia(RequestQuestionLhia data, String token) {
-		String urlRespuesta = env.getProperty("lhia.respuesta");
-		log.info("Enviando a LHIA: {}", data);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setBearerAuth(token);
+	public Mono<String> sendMesssageToLhia(String message) {
+		String urlRespuesta = env.getProperty("lhia.request");
+		log.info("Enviando mensaje a LHIA: {}", message);
 
-		Map<String, Object> body = objectMapper.convertValue(data, Map.class);
+		// Crear objeto de request local
+		RequestQuestionLhia rql = new RequestQuestionLhia();
+		rql.setMessage(message);
+		rql.setDescripcion("INFORMATIVO");
+		rql.setUsuario("INFORMATIVO");
+		rql.setIdentificador("1dcfa109-b307-4fea-9483-03855cf81451");
 
-		return webClient.build()
-				.post()
-				.uri(urlRespuesta)
-				.headers(h -> h.addAll(headers))
-				.bodyValue(body)
-				.retrieve()
-				.bodyToMono(ResponseLhia.class)
-				.doOnNext(resp -> log.info("Respuesta de LHIA: {}", resp));
+		return getToken().flatMap(token -> {
+			if (token == null || token.isEmpty()) {
+				log.warn("Token vacío, no se enviará el mensaje a LHIA.");
+				return Mono.empty();
+			}
+
+			return webClient.build()
+					.post()
+					.uri(urlRespuesta)
+					.headers(h -> {
+						h.setContentType(MediaType.APPLICATION_JSON);
+						h.setBearerAuth(token);
+					})
+					.bodyValue(rql)
+					.retrieve()
+					.bodyToMono(ResponseLhia.class)
+					.map(ResponseLhia::getRespuesta)
+					.onErrorResume(e -> {
+						log.error("Error al enviar mensaje a LHIA: {}", e.getMessage());
+						return Mono.empty();
+					});
+		});
 	}
 }

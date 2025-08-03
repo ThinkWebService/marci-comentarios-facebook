@@ -45,7 +45,7 @@ public class ResponseFacebookDTO {
     public static class Post {
         private String id;
         private String status_type;
-        private boolean is_published;
+        private boolean published;
         private String updated_time;
         private String permalink_url;
         private String promotion_status;

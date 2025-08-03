@@ -1,17 +1,18 @@
 package com.marcicomentariosfacebook.client.FACEBOOK.services;
 
-import com.marcicomentariosfacebook.client.FACEBOOK.models.FacebookApiResponse;
-import com.marcicomentariosfacebook.models.Attachment;
-import com.marcicomentariosfacebook.models.Comment;
-import com.marcicomentariosfacebook.models.Post;
-import reactor.core.publisher.Flux;
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbCommentsReactionsResp;
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPageResp;
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPostsResp;
+import com.marcicomentariosfacebook.dtos.model.Attachment;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 public interface APIGraphService {
+    // Obtener comentarios por post
+    Mono<FbCommentsReactionsResp> getCommentsReactionsByPostId(String postId);
     // Listar posts por page id
-    Flux<Post> getPosts();
+    Mono<FbPostsResp> getPosts();
+
+    Mono<FbPageResp> getPageInfo();
 
     // Obtener comentarios por attachment
     Mono<Attachment> addCommentsAndReactionsToAttachment(Attachment attachment);
@@ -22,4 +23,3 @@ public interface APIGraphService {
     // Responder a un comentario
     Mono<String> replyComment(String commentId, String message);
 }
-

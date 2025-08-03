@@ -1,5 +1,6 @@
 package com.marcicomentariosfacebook.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcicomentariosfacebook.dtos.WebhookPayload;
 import com.marcicomentariosfacebook.services.EventoHandler;
 import com.marcicomentariosfacebook.services.factory.EventoHandlerFactory;
@@ -27,8 +28,8 @@ public class WebhookController {
     // ✅ Suscripción automática al iniciar la app
     @PostConstruct
     public void subscribeWebhook() {
-        String pageId = env.getProperty("meta.api.id.page");
-        String accessToken = env.getProperty("meta.api.bearer.token");
+        String pageId = env.getProperty("facebook.api.id.page");
+        String accessToken = env.getProperty("facebook.api.bearer.token");
 
         String url = "https://graph.facebook.com/v23.0/" + pageId + "/subscribed_apps"
                 + "?subscribed_fields=feed"
@@ -62,7 +63,7 @@ public class WebhookController {
             @RequestParam(name = "hub.verify_token", required = false) String verifyToken,
             @RequestParam(name = "hub.challenge", required = false) String challenge) {
         log.info("🛡️ Verificando webhook con token: {} y challenge: {}", verifyToken, challenge);
-        String expectedToken = env.getProperty("meta.api.verify.token");
+        String expectedToken = env.getProperty("facebook.api.verify.token");
         if (expectedToken != null && expectedToken.equals(verifyToken)) {
             return Mono.just(ResponseEntity.ok(challenge));
         } else {
@@ -73,30 +74,39 @@ public class WebhookController {
 
 
     @PostMapping
-    public Mono<ResponseEntity<String>> receiveWebhook(@RequestBody Mono<WebhookPayload> payloadMono) {
-        return payloadMono
-                .doOnNext(payload -> log.info("📬 Webhook recibido: {}", payload))
-                .flatMap(payload -> {
-                    for (WebhookPayload.Entry entry : payload.getEntry()) {
-                        for (WebhookPayload.Change change : entry.getChanges()) {
-                            if (!"feed".equals(change.getField())) continue;
+    public Mono<ResponseEntity<String>> receiveWebhook(@RequestBody Mono<String> rawBodyMono) {
+        return rawBodyMono
+                .doOnNext(json -> log.info("📥 JSON recibido: {}", json)) // Imprime el JSON sin parsear
+                .flatMap(json -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        WebhookPayload payload = mapper.readValue(json, WebhookPayload.class);
 
-                            WebhookPayload.Value value = change.getValue();
+                        for (WebhookPayload.Entry entry : payload.getEntry()) {
+                            for (WebhookPayload.Change change : entry.getChanges()) {
+                                if (!"feed".equals(change.getField())) continue;
 
-                            String item = value.getItem();
-                            String verb = value.getVerb();
+                                WebhookPayload.Value value = change.getValue();
 
-                            log.info("📌 Evento recibido: item={}, verb={}", item, verb);
+                                String item = value.getItem();
+                                String verb = value.getVerb();
 
-                            EventoHandler handler = eventoHandlerFactory.getHandler(item);
-                            if (handler != null) {
-                                handler.manejar(verb, value).subscribe();
-                            } else {
-                                log.warn("Evento no manejado: {}", item);
+                                log.info("📌 Evento recibido: item={}, verb={}", item, verb);
+
+                                EventoHandler handler = eventoHandlerFactory.getHandler(item);
+                                if (handler != null) {
+                                    handler.manejar(verb, value).subscribe();
+                                } else {
+                                    log.warn("Evento no manejado: {}", item);
+                                }
                             }
                         }
+
+                        return Mono.just(ResponseEntity.ok("Evento recibido y procesado"));
+                    } catch (Exception e) {
+                        log.error("❌ Error al deserializar JSON del webhook", e);
+                        return Mono.just(ResponseEntity.badRequest().body("JSON inválido"));
                     }
-                    return Mono.just(ResponseEntity.ok("Evento recibido y procesado"));
                 });
     }
 

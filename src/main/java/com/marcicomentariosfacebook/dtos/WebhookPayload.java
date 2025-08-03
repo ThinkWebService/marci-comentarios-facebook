@@ -1,9 +1,11 @@
 package com.marcicomentariosfacebook.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.marcicomentariosfacebook.utils.fechas.EpochSecondsDateDeserializer;
 import lombok.Data;
-import java.util.List;
 
-import lombok.Data;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -20,31 +22,56 @@ public class WebhookPayload {
 
     @Data
     public static class Change {
-        private String field; // "feed"
+        private String field;
         private Value value;
     }
 
     @Data
     public static class Value {
-        private String item; // "status", "photo", "comment", "reaction"
-        private String verb; // "add", "edited", "remove", etc.
+        private String item;
+        private String verb;
         private String post_id;
         private String comment_id;
         private String parent_id;
         private String photo_id;
-        private String created_time;
         private String message;
         private String link;
-        private boolean published;
+
+        @JsonProperty("published")
+        private Integer published; // 1 o 0 del JSON
+
+        @JsonProperty("is_published")
+        private Boolean isPublished;
+
+        @JsonDeserialize(using = EpochSecondsDateDeserializer.class)
+        private LocalDateTime created_time;
+
+        @JsonDeserialize(using = EpochSecondsDateDeserializer.class)
+        private LocalDateTime updated_time;
 
         private From from;
-        private String reaction_type; // Solo si es reacción
-        private List<String> photos;  // Solo si es publicación con fotos
+        private String reaction_type;
+        private List<String> photos;
+
+        private Post post;
     }
+
 
     @Data
     public static class From {
         private String id;
         private String name;
     }
+
+    @Data
+    public static class Post {
+        private String id;
+        private String status_type;
+        @JsonProperty("is_published")
+        private Boolean isPublished;
+        private String updated_time;
+        private String permalink_url;
+        private String promotion_status;
+    }
+
 }

@@ -1,9 +1,8 @@
 package com.marcicomentariosfacebook.repositories;
 
-import com.marcicomentariosfacebook.models.Post;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import reactor.core.publisher.Flux;
+import com.marcicomentariosfacebook.model.Post;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface PostRepository extends ReactiveMongoRepository<Post, String> {
+public interface PostRepository extends ReactiveCrudRepository<Post, String> {
 
 }

@@ -3,9 +3,10 @@ package com.marcicomentariosfacebook.maper;
 import com.marcicomentariosfacebook.client.FACEBOOK.models.CommentsReactions;
 import com.marcicomentariosfacebook.client.FACEBOOK.models.CommentsReactionsData;
 import com.marcicomentariosfacebook.client.FACEBOOK.models.User;
-import com.marcicomentariosfacebook.models.Attachment;
-import com.marcicomentariosfacebook.models.Author;
-import com.marcicomentariosfacebook.models.Comment;
+import com.marcicomentariosfacebook.dtos.model.Attachment;
+import com.marcicomentariosfacebook.dtos.model.Author;
+import com.marcicomentariosfacebook.dtos.model.Comment;
+import com.marcicomentariosfacebook.dtos.model.Reaction;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -30,7 +31,7 @@ public class FacebookMapperAttachments {
                 .collect(Collectors.toList());
 
         // Procesar reacciones (puedes tomar todas las reacciones de todos los comentarios, o solo del primero, según lógica)
-        List<com.marcicomentariosfacebook.models.Reaction> reactions = dataList.stream()
+        List<Reaction> reactions = dataList.stream()
                 .flatMap(cr -> cr.getReactions() != null && cr.getReactions().getData() != null
                         ? cr.getReactions().getData().stream().map(this::mapFacebookReactionToDomain)
                         : Stream.empty())
@@ -62,10 +63,10 @@ public class FacebookMapperAttachments {
                 .build();
     }
 
-    private com.marcicomentariosfacebook.models.Reaction mapFacebookReactionToDomain(
+    private Reaction mapFacebookReactionToDomain(
             com.marcicomentariosfacebook.client.FACEBOOK.models.Reaction fbReaction) {
 
-        return com.marcicomentariosfacebook.models.Reaction.builder()
+        return Reaction.builder()
                 .id(fbReaction.getId())
                 .name(fbReaction.getName())
                 .type(fbReaction.getType())
