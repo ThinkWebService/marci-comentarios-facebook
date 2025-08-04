@@ -3,6 +3,7 @@ package com.marcicomentariosfacebook.client.FACEBOOK.services;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbCommentsReactionsResp;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPageResp;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPostsResp;
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbSendCommentResponse;
 import com.marcicomentariosfacebook.client.FACEBOOK.models.CommentsReactionsData;
 import com.marcicomentariosfacebook.maper.FacebookMapperAttachments;
 import com.marcicomentariosfacebook.dtos.model.Attachment;
@@ -121,8 +122,9 @@ public class APIGraphServiceImp implements APIGraphService{
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(body)
                 .retrieve()
-                .bodyToMono(String.class)
-                .doOnNext(response -> log.info("↪️ Respuesta enviada al comentario: {}", response))
+                .bodyToMono(FbSendCommentResponse.class)
+                .map(FbSendCommentResponse::getId)
+                .doOnNext(newId -> log.info("↪️ Respuesta enviada al comentario: {}", newId))
                 .doOnError(e -> log.error("❌ Error respondiendo comentario", e));
     }
 

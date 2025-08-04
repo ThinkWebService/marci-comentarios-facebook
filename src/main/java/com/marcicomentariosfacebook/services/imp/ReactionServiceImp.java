@@ -20,20 +20,21 @@ public class ReactionServiceImp implements ReactionService {
 
     @Override
     public Mono<Reaction> save(Reaction reaction) {
-        if (reaction.getId() == null) {
-            // Si no hay ID, guardamos directamente sin verificar existencia
-            return r2dbcEntityTemplate.insert(Reaction.class).using(reaction);
-        } else {
-            // Si hay ID, verificamos existencia antes de guardar
-            return reactionRepository.existsById(reaction.getId())
-                    .flatMap(exists -> {
-                        if (exists) {
-                            return reactionRepository.save(reaction); // Actualiza
-                        } else {
-                            return r2dbcEntityTemplate.insert(Reaction.class).using(reaction); // Inserta nuevo
-                        }
-                    });
-        }
+        return reactionRepository
+                .findByUserIdAndPostIdAndCommentId(
+                        reaction.getUser_id(),
+                        reaction.getPost_id(),
+                        reaction.getComment_id()
+                )
+                .flatMap(existing -> {
+                    // Si ya existe, actualiza usando el ID existente
+                    reaction.setId(existing.getId());
+                    return reactionRepository.save(reaction);
+                })
+                .switchIfEmpty(
+                        // Si no existe, inserta uno nuevo
+                        r2dbcEntityTemplate.insert(Reaction.class).using(reaction)
+                );
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.marcicomentariosfacebook.services.factory;
 
 import com.marcicomentariosfacebook.dtos.WebhookPayload;
 import com.marcicomentariosfacebook.model.Comment;
+import com.marcicomentariosfacebook.model.From;
 import com.marcicomentariosfacebook.model.ResponseType;
 import com.marcicomentariosfacebook.services.CommentService;
 import com.marcicomentariosfacebook.services.EventoHandler;
+import com.marcicomentariosfacebook.services.FromService;
 import com.marcicomentariosfacebook.utils.maper.events.MapperComment;
 import com.marcicomentariosfacebook.websocket.CommentWebSocketHandler;
 import lombok.RequiredArgsConstructor;
@@ -22,62 +24,106 @@ public class CommentEventoHandler implements EventoHandler {
     private final CommentWebSocketHandler commentWebSocketHandler;
     private final CommentService commentService;
     private final MapperComment mapperComment;
+    private final FromService fromService;
 
     @Override
     public Mono<Void> manejar(String verb, WebhookPayload.Value value) {
         String pageId = environment.getProperty("facebook.api.id.page");
 
-        // 1. Mapear comentario desde Value
-        Comment comment = mapperComment.mapValueToComment(value);
-        if (comment == null) {
-            log.warn("No se pudo mapear comentario desde value: {}", value);
-            return Mono.empty();
-        }
+        // Mono para guardar el From (usuario) si existe y asegurar que esté en BD antes de continuar
+        Mono<From> fuserMono = Mono.justOrEmpty(value.getFrom())
+                .filter(from -> from.getId() != null)
+                .map(from -> From.builder()
+                        .id(from.getId())
+                        .name(from.getName())
+                        .build())
+                .flatMap(fromService::save)
+                // En caso de no haber usuario, emitimos vacío, lo manejaremos luego
+                .switchIfEmpty(Mono.empty());
 
-        // 2. Verificar si el comentario lo hizo la misma página
+        return mapperComment.mapValueToComment(value)
+                .switchIfEmpty(Mono.fromRunnable(() ->
+                        log.warn("No se pudo mapear comentario desde value: {}", value)
+                ))
+                .flatMap(comment ->
+                        // Esperamos a que fuserMono complete (con o sin usuario)
+                        fuserMono
+                                .switchIfEmpty(Mono.just(From.builder().id(null).name(null).build())) // Emite un From "vacío" para no usar null
+                                .flatMap(from -> {
+                                    switch (verb) {
+                                        case "add":
+                                            // Aquí pasamos solo comment y pageId porque fuserMono ya consumido
+                                            return manejarAdd(comment, pageId);
+                                        case "edited":
+                                        case "remove":
+                                        case "hide":
+                                        case "unhide":
+                                            return updateStateComment(comment, verb);
+                                        default:
+                                            log.warn("⚠️ Verb no manejado todavía: {}", verb);
+                                            return Mono.empty();
+                                    }
+                                })
+                );
+    }
+
+    // Cambié para no pasar fuserMono porque ya guardamos al usuario antes
+    private Mono<Void> manejarAdd(Comment comment, String pageId) {
         Mono<Comment> commentSaved;
+
         if (comment.getFrom_id() != null && comment.getFrom_id().equals(pageId)) {
-            // Es un comentario hecho por la página (agente o autorrespuesta)
+            // Comentario del administrador
             commentSaved = commentService.findById(comment.getId())
                     .flatMap(existingComment -> {
-                        // Aquí actualizas atributos adicionales antes de guardar
-                        comment.setAuto_answered(existingComment.isAuto_answered());
-                        comment.setAgent_user(existingComment.getAgent_user());
-                        comment.setResponse_type(existingComment.getResponse_type());
-                        return commentService.save(comment); // Actualiza
+                        comment.setAuto_answered(existingComment.getAuto_answered());
+
+                        if (existingComment.getAgent_user() != null) {
+                            comment.setAgent_user(existingComment.getAgent_user());
+                        }
+
+                        if (existingComment.getResponse_type() != null) {
+                            comment.setResponse_type(existingComment.getResponse_type());
+                        }
+
+                        log.info("Nuevo comentario de [ADMIN PAGE] desde (LHIA-MIND) a guardar o actualizar: {}", comment);
+                        return commentService.save(comment);
                     })
                     .switchIfEmpty(
                             Mono.defer(() -> {
-                                // Si no existía antes, lo insertas con valores por defecto
-                                comment.setResponse_type(ResponseType.FACEBOOK); // Publicado desde Facebook directamente
+                                comment.setResponse_type(ResponseType.FACEBOOK);
+                                log.info("Nuevo comentario de [ADMIN PAGE] desde (FACEBOOK) a guardar o actualizar: {}", comment);
                                 return commentService.save(comment);
                             })
                     );
         } else {
-            // Comentario de un cliente o usuario (NO hecho por la página)
+            // Comentario de cliente
+            log.info("Nuevo comentario de [USUARIO] desde (FACEBOOK) a guardar o actualizar: {}", comment);
+
+            // NO se asigna agent_user automáticamente aquí
+            if (comment.getResponse_type() == null) {
+                comment.setResponse_type(ResponseType.FACEBOOK);
+            }
             commentSaved = commentService.save(comment);
         }
 
-        // 3. Flujo completo en orden: guardar → notificar WS → responder (si aplica)
-        return commentSaved.flatMap(parentComment -> {
-            return commentWebSocketHandler.publish(parentComment)
-                    .then(Mono.defer(() -> {
-                        boolean esComentarioDeCliente = parentComment.getFrom_id() != null
-                                && !parentComment.getFrom_id().equals(pageId)
-                                && parentComment.getMessage() != null;
+        return commentSaved.flatMap(savedComment ->
+                commentWebSocketHandler.publishComment(savedComment)
+                        .then(Mono.defer(() -> {
+                            boolean esCliente = savedComment.getFrom_id() != null
+                                    && !savedComment.getFrom_id().equals(pageId)
+                                    && savedComment.getMessage() != null;
 
-                        if (esComentarioDeCliente) {
-                            return commentService.responderComentario(
-                                    parentComment.getId(),
-                                    parentComment.getMessage(),
-                                    true,
-                                    ResponseType.LHIA,
-                                    null
-                            );
-                        } else {
-                            return Mono.empty();
-                        }
-                    }));
-        });
+                            return esCliente
+                                    ? commentService.responderComentarioAutomatico(savedComment.getId(), savedComment.getMessage())
+                                    : Mono.empty();
+                        }))
+        );
+    }
+
+    private Mono<Void> updateStateComment(Comment comment, String verb) {
+        comment.setVerb(verb);
+        log.info("El estado del comentario [{}] se actualizará a [{}]", comment.getId(), verb);
+        return commentService.save(comment)
+                .flatMap(commentWebSocketHandler::publishComment);
     }
 }

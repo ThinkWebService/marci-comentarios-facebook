@@ -91,7 +91,7 @@ public class WebhookController {
                                 String item = value.getItem();
                                 String verb = value.getVerb();
 
-                                log.info("📌 Evento recibido: item={}, verb={}", item, verb);
+                                log.info("📌 Evento recibido ({}/{}): procesando item={}, verb={}", item, verb, item, verb);
 
                                 EventoHandler handler = eventoHandlerFactory.getHandler(item);
                                 if (handler != null) {
@@ -109,6 +109,5 @@ public class WebhookController {
                     }
                 });
     }
-
 
 }

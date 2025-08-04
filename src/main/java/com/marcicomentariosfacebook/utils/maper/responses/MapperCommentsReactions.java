@@ -32,26 +32,25 @@ public class MapperCommentsReactions {
     }
 
     private void flattenCommentsRecursively(FbCommentsReactionsResp.Comment fbComment, String postId, String parentId, List<Comment> collector) {
-        // Validación de seguridad para evitar NPE
-        if (fbComment.getFrom() == null || fbComment.getFrom().getId() == null) {
-            log.warn("Comentario sin autor (from) o sin ID. Comentario ignorado: {}", fbComment.getId());
-            return; // Salta este comentario
+        if (fbComment == null || fbComment.getId() == null) {
+            return;
         }
 
-        // Mapea el comentario actual
-        Comment mappedComment = Comment.builder()
+        Comment.CommentBuilder builder = Comment.builder()
                 .id(fbComment.getId())
                 .message(fbComment.getMessage())
                 .created_time(fbComment.getCreated_time())
-                .from_id(fbComment.getFrom().getId())
-                .parent_id(parentId) // se pasa como parámetro en la recursión
-                .post_id(postId)
-                .build();
+                .parent_id(parentId)
+                .post_id(postId);
 
-        // Agrega al resultado
-        collector.add(mappedComment);
+        if (fbComment.getFrom() != null) {
+            builder.from_id(fbComment.getFrom().getId());
+        } else {
+            log.warn("⚠️ Comentario {} sin autor (from). Se guardará con from_id null", fbComment.getId());
+        }
 
-        // Recorre sus respuestas (hijos)
+        collector.add(builder.build());
+
         if (fbComment.getComments() != null && fbComment.getComments().getData() != null) {
             for (FbCommentsReactionsResp.Comment child : fbComment.getComments().getData()) {
                 flattenCommentsRecursively(child, postId, fbComment.getId(), collector);
@@ -59,14 +58,11 @@ public class MapperCommentsReactions {
         }
     }
 
-
     public Flux<Reaction> mapReactions(FbCommentsReactionsResp response) {
-        // 1. Reacciones al POST principal
         Flux<Reaction> postReactions = Flux.empty();
-        if (response.getReactions() != null) {
-            // Mapear reacciones del array 'data'
-            postReactions = response.getReactions().getData() != null
-                    ? Flux.fromIterable(response.getReactions().getData())
+
+        if (response.getReactions() != null && response.getReactions().getData() != null) {
+            postReactions = Flux.fromIterable(response.getReactions().getData())
                     .map(reaction -> Reaction.builder()
                             .id(null)
                             .user_id(reaction.getId())
@@ -74,28 +70,23 @@ public class MapperCommentsReactions {
                             .type(reaction.getType())
                             .comment_id(null)
                             .post_id(response.getId())
-                            .build())
-                    : Flux.empty();
-
-            // Añadir reacción del AUTOR (from) si existe en el summary
-            if (response.getReactions().getSummary() != null
-                    && !"NONE".equals(response.getReactions().getSummary().getViewer_reaction())
-                    && response.getFrom() != null) {
-
-                Reaction authorReaction = Reaction.builder()
-                        .id(null)
-                        .user_id(response.getFrom().getId()) // ID del autor (from)
-                        .user_name(response.getFrom().getName())
-                        .type(response.getReactions().getSummary().getViewer_reaction()) // Ej: "LIKE"
-                        .comment_id(null)
-                        .post_id(response.getId())
-                        .build();
-
-                postReactions = Flux.concat(postReactions, Flux.just(authorReaction));
-            }
+                            .build());
         }
 
-        // 2. Reacciones a COMENTARIOS (misma lógica para el autor del comentario)
+        if (response.getReactions() != null && response.getReactions().getSummary() != null
+                && !"NONE".equals(response.getReactions().getSummary().getViewer_reaction())
+                && response.getFrom() != null) {
+            Reaction authorReaction = Reaction.builder()
+                    .id(null)
+                    .user_id(response.getFrom().getId())
+                    .user_name(response.getFrom().getName())
+                    .type(response.getReactions().getSummary().getViewer_reaction())
+                    .comment_id(null)
+                    .post_id(response.getId())
+                    .build();
+            postReactions = Flux.concat(postReactions, Flux.just(authorReaction));
+        }
+
         Flux<Reaction> commentReactions = Flux.empty();
         if (response.getComments() != null && response.getComments().getData() != null) {
             commentReactions = Flux.fromIterable(response.getComments().getData())
@@ -114,14 +105,12 @@ public class MapperCommentsReactions {
                                         .build())
                                 : Flux.empty();
 
-                        // Añadir reacción del AUTOR del comentario (comment.getFrom())
                         if (comment.getReactions().getSummary() != null
                                 && !"NONE".equals(comment.getReactions().getSummary().getViewer_reaction())
                                 && comment.getFrom() != null) {
-
                             Reaction authorReaction = Reaction.builder()
                                     .id(null)
-                                    .user_id(comment.getFrom().getId()) // ID del autor del comentario
+                                    .user_id(comment.getFrom().getId())
                                     .user_name(comment.getFrom().getName())
                                     .type(comment.getReactions().getSummary().getViewer_reaction())
                                     .comment_id(comment.getId())
@@ -137,12 +126,12 @@ public class MapperCommentsReactions {
 
         return Flux.merge(postReactions, commentReactions);
     }
+
     public Flux<From> mapFroms(FbCommentsReactionsResp response) {
         if (response == null) {
             return Flux.empty();
         }
 
-        // Autor del post
         Flux<From> postAuthor = response.getFrom() != null
                 ? Flux.just(From.builder()
                 .id(response.getFrom().getId())
@@ -150,7 +139,6 @@ public class MapperCommentsReactions {
                 .build())
                 : Flux.empty();
 
-        // Usuarios de comentarios y respuestas
         Flux<From> commentUsers = Flux.empty();
         if (response.getComments() != null && response.getComments().getData() != null) {
             commentUsers = Flux.fromIterable(response.getComments().getData())
@@ -172,7 +160,6 @@ public class MapperCommentsReactions {
                             users = Flux.concat(users, replyUsers);
                         }
 
-                        // Usuarios de reacciones a comentarios
                         if (comment.getReactions() != null && comment.getReactions().getData() != null) {
                             Flux<From> reactionUsers = Flux.fromIterable(comment.getReactions().getData())
                                     .map(reaction -> From.builder()
@@ -186,7 +173,6 @@ public class MapperCommentsReactions {
                     });
         }
 
-        // Usuarios de reacciones al post
         Flux<From> postReactionUsers = Flux.empty();
         if (response.getReactions() != null && response.getReactions().getData() != null) {
             postReactionUsers = Flux.fromIterable(response.getReactions().getData())

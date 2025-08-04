@@ -8,6 +8,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Data
 public class WebhookPayload {
     private String object;
@@ -27,6 +29,7 @@ public class WebhookPayload {
     }
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Value {
         private String item;
         private String verb;
@@ -38,7 +41,7 @@ public class WebhookPayload {
         private String link;
 
         @JsonProperty("published")
-        private Integer published; // 1 o 0 del JSON
+        private Integer published;
 
         @JsonProperty("is_published")
         private Boolean isPublished;
@@ -54,8 +57,10 @@ public class WebhookPayload {
         private List<String> photos;
 
         private Post post;
-    }
 
+        @JsonProperty("video_id")
+        private String videoId;
+    }
 
     @Data
     public static class From {
@@ -67,11 +72,12 @@ public class WebhookPayload {
     public static class Post {
         private String id;
         private String status_type;
+
         @JsonProperty("is_published")
         private Boolean isPublished;
+
         private String updated_time;
         private String permalink_url;
         private String promotion_status;
     }
-
 }

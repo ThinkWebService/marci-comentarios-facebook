@@ -5,4 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface PageService {
     Mono<Page> save(Page page);
+
+    Mono<Page> getMyPage();
 }

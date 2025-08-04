@@ -2,7 +2,13 @@ package com.marcicomentariosfacebook.websocket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marcicomentariosfacebook.model.Comment;
+import com.marcicomentariosfacebook.model.From;
+import com.marcicomentariosfacebook.model.Post;
+import com.marcicomentariosfacebook.model.Reaction;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -14,94 +20,98 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
+/**
+ *
+ *
+ * */
 @AllArgsConstructor
 @Component
 @Slf4j
 public class CommentWebSocketHandler implements WebSocketHandler {
 
-    private final Map<String, Sinks.Many<String>> sinks = new ConcurrentHashMap<>();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Map<String, Sinks.Many<String>> commentSinks = new ConcurrentHashMap<>();
+    private final Map<String, Sinks.Many<String>> reactionSinks = new ConcurrentHashMap<>();
+    private final Map<String, Sinks.Many<String>> postSinks = new ConcurrentHashMap<>();
+    private final Map<String, Sinks.Many<String>> fromSinks = new ConcurrentHashMap<>();
+
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @Override
     @NonNull
     public Mono<Void> handle(WebSocketSession session) {
-        final String[] emailHolder = new String[1];
-        Set<String> subscribedPostIds = ConcurrentHashMap.newKeySet();
+        // Para simplificar, enviamos TODO tipo de eventos a todos los clientes.
+        // En producción, puedes hacer suscripciones filtradas.
 
-        // Sink para enviar eventos de estado (online/offline) a este cliente
-        Sinks.Many<String> personalSink = Sinks.many().unicast().onBackpressureBuffer();
+        // Un solo sink que mezcla todos tipos
+        Sinks.Many<String> combinedSink = Sinks.many().multicast().onBackpressureBuffer();
 
-        Flux<String> inputMessages = session.receive()
-                .map(WebSocketMessage::getPayloadAsText)
-                .doOnNext(message -> {
-                    if (message.startsWith("email:")) {
-                        String email = message.substring(6).trim();
-                        emailHolder[0] = email;
-                        log.info("🟢 Cliente {} conectado", email);
-                        // Enviar mensaje de estado online al cliente
-                        personalSink.tryEmitNext("status:online:" + email);
-                    } else if (message.startsWith("subscribe:")) {
-                        String postId = message.substring(10).trim();
-                        log.info("✅ Cliente {} suscrito a postId: {}", emailHolder[0], postId);
-                        subscribedPostIds.add(postId);
-                    }
-                })
-                .doOnCancel(() -> {
-                    log.info("❌ Cliente {} canceló la conexión", emailHolder[0]);
-                    personalSink.tryEmitNext("status:offline:" + emailHolder[0]);
-                })
-                .doOnTerminate(() -> {
-                    log.info("🔴 Cliente {} desconectado", emailHolder[0]);
-                    personalSink.tryEmitNext("status:offline:" + emailHolder[0]);
-                })
-                .share();
+        // Registramos los sinks para enviar a combinedSink
+        commentSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
+        reactionSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
+        postSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
+        fromSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
 
-        // Flux para enviar actualizaciones de comentarios según suscripción
-        Flux<WebSocketMessage> updates = Flux.defer(() -> {
-            List<Flux<String>> fluxList = subscribedPostIds.stream()
-                    .map(postId -> sinks.computeIfAbsent(postId,
-                            key -> Sinks.many().multicast().onBackpressureBuffer()).asFlux())
-                    .collect(Collectors.toList());
-
-            if (fluxList.isEmpty()) {
-                return Flux.never();
-            }
-
-            return Flux.merge(fluxList)
-                    .map(session::textMessage);
-        });
-
-        // Flux para mensajes de estado personal (online/offline)
-        Flux<WebSocketMessage> statusMessages = personalSink.asFlux()
+        Flux<WebSocketMessage> outgoingMessages = combinedSink.asFlux()
                 .map(session::textMessage);
 
-        // Fusionar actualizaciones de comentarios y mensajes de estado
-        Flux<WebSocketMessage> outputMessages = Flux.merge(updates, statusMessages);
-
-        // Enviar mensajes al cliente y procesar la entrada
-        return session.send(outputMessages)
-                .and(inputMessages.then());
+        // Por simplicidad, no procesamos mensajes recibidos del cliente
+        return session.send(outgoingMessages);
     }
 
-    // Publica un nuevo comentario a todos los suscriptores del postId
-    public Mono<Void> publish(Comment comment) {
-        String postId = comment.getPost_id();
+    // Métodos para publicar cada tipo (envía JSON con campo "type" para identificar)
 
+    public Mono<Void> publishComment(Comment comment) {
+        return publishGeneric("comment", comment);
+    }
+
+    public Mono<Void> publishReaction(Reaction reaction) {
+        return publishGeneric("reaction", reaction);
+    }
+
+    public Mono<Void> publishPost(Post post) {
+        return publishGeneric("post", post);
+    }
+
+    public Mono<Void> publishFrom(From from) {
+        return publishGeneric("from", from);
+    }
+
+    private Mono<Void> publishGeneric(String type, Object data) {
         try {
-            String messageJson = objectMapper.writeValueAsString(comment);
-            sinks.computeIfAbsent(postId, k -> Sinks.many().multicast().onBackpressureBuffer())
-                    .tryEmitNext(messageJson);
-            log.info("✅ Comentario publicado para postId {}: {}", postId, messageJson);
-        } catch (JsonProcessingException e) {
-            log.error("❌ Error al serializar el comentario a JSON", e);
-        }
+            ObjectNode root = objectMapper.createObjectNode();
+            root.put("type", type);
+            root.set("data", objectMapper.valueToTree(data));
+            String json = objectMapper.writeValueAsString(root);
 
+            // Envío a todos sinks de ese tipo (puedes mejorar según tu lógica)
+            Map<String, Sinks.Many<String>> targetMap = switch (type) {
+                case "comment" -> commentSinks;
+                case "reaction" -> reactionSinks;
+                case "post" -> postSinks;
+                case "from" -> fromSinks;
+                default -> null;
+            };
+
+            if (targetMap == null) {
+                log.error("Tipo desconocido para publicar: {}", type);
+                return Mono.empty();
+            }
+
+            // Si no hay sinks aún, creamos uno para broadcast
+            if (targetMap.isEmpty()) {
+                targetMap.put("all", Sinks.many().multicast().onBackpressureBuffer());
+            }
+
+            targetMap.values().forEach(sink -> sink.tryEmitNext(json));
+            log.info("🔔 Notificando nuevo evento WebSocket Tipo: [{}], Contenido: {}", type, json);
+        } catch (JsonProcessingException e) {
+            log.error("Error serializando evento WS tipo {}", type, e);
+        }
         return Mono.empty();
     }
 }
