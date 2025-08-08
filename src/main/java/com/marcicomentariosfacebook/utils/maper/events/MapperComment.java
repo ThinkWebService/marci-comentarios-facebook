@@ -34,7 +34,7 @@ public class MapperComment {
                 .updated_time(value.getUpdated_time())
                 .verb(value.getVerb())
                 .from_id(value.getFrom() != null ? value.getFrom().getId() : null)
-                .parent_id(parentId)
+                .parentId(parentId)
                 .post_id(postId)
                 .build();
 

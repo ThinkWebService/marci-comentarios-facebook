@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -120,10 +121,38 @@ public class CommentEventoHandler implements EventoHandler {
         );
     }
 
-    private Mono<Void> updateStateComment(Comment comment, String verb) {
-        comment.setVerb(verb);
-        log.info("El estado del comentario [{}] se actualizará a [{}]", comment.getId(), verb);
-        return commentService.save(comment)
-                .flatMap(commentWebSocketHandler::publishComment);
+    private Mono<Void> updateStateComment(Comment parentComment, String verb) {
+        parentComment.setVerb(verb);
+
+        if ("edited".equals(verb)) {
+            log.info("✏️ Se actualizará SOLO el comentario [{}] con verb='edited'", parentComment.getId());
+            return commentService.save(parentComment)
+                    .flatMap(commentWebSocketHandler::publishComment)
+                    .then();
+        }
+
+        log.info("🔁 Se actualizará el estado del comentario [{}] y todos sus descendientes a [{}]", parentComment.getId(), verb);
+
+        return collectAllDescendants(parentComment)
+                .map(comment -> {
+                    comment.setVerb(verb);
+                    return comment;
+                })
+                .collectList()
+                .flatMapMany(commentService::saveAll)
+                .flatMap(comment -> commentWebSocketHandler.publishComment(comment).thenReturn(comment))
+                .then();
     }
+
+
+    /**
+     * Recursivamente obtiene todos los descendientes del comentario, incluyendo el padre.
+     */
+    private Flux<Comment> collectAllDescendants(Comment parent) {
+        return commentService.findAllByParentId(parent.getId())
+                .flatMap(child -> collectAllDescendants(child)) // recursión
+                .startWith(parent); // incluye el comentario actual (padre)
+    }
+
+
 }

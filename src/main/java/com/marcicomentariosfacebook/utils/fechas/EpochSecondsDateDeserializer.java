@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 public class EpochSecondsDateDeserializer extends StdDeserializer<LocalDateTime> {
+
+    private static final ZoneId ECUADOR_ZONE = ZoneId.of("America/Guayaquil");
 
     public EpochSecondsDateDeserializer() {
         super(LocalDateTime.class);
@@ -18,6 +20,6 @@ public class EpochSecondsDateDeserializer extends StdDeserializer<LocalDateTime>
     @Override
     public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         long epochSeconds = p.getLongValue(); // espera número entero
-        return LocalDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneOffset.UTC);
+        return LocalDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ECUADOR_ZONE);
     }
 }

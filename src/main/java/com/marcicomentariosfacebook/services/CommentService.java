@@ -12,8 +12,9 @@ public interface CommentService {
 
     Mono<Comment> save(Comment comment);
 
-    Mono<Void> saveAll(List<Comment>comments);
+    Flux<Comment> saveAll(List<Comment>comments);
 
+    Flux<Comment> findAllByParentId(String id);
 
 
     Mono<Comment> findById(String id);

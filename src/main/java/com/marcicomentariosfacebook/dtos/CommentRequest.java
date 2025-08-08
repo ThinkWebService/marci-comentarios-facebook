@@ -13,7 +13,7 @@ public class CommentRequest {
     private String message;
 
     @NotBlank(message = "El campo 'agent_user' es requerido")
-    @Email(message = "El campo 'agent_user' debe ser un correo válido")
+    //@Email(message = "El campo 'agent_user' debe ser un correo válido")
     private String agent_user;
 
     @NotNull(message = "El campo 'response_type' es requerido")

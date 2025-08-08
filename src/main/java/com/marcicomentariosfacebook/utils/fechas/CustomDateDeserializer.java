@@ -8,18 +8,25 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 public class CustomDateDeserializer extends StdDeserializer<LocalDateTime> {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+    private static final ZoneId ECUADOR_ZONE = ZoneId.of("America/Guayaquil");
 
     public CustomDateDeserializer() {
         super(LocalDateTime.class);
     }
 
     @Override
-    public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt)
-            throws IOException {
+    public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String date = p.getText();
-        return LocalDateTime.parse(date, FORMATTER);
+        // Parsear con formatter a ZonedDateTime y luego convertir a la zona Ecuador
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(date, FORMATTER);
+        ZonedDateTime ecuadorTime = zonedDateTime.withZoneSameInstant(ECUADOR_ZONE);
+        return ecuadorTime.toLocalDateTime();
     }
 }
+

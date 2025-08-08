@@ -40,13 +40,13 @@ public class MapperCommentsReactions {
                 .id(fbComment.getId())
                 .message(fbComment.getMessage())
                 .created_time(fbComment.getCreated_time())
-                .parent_id(parentId)
+                .parentId(parentId)
                 .post_id(postId);
 
         if (fbComment.getFrom() != null) {
             builder.from_id(fbComment.getFrom().getId());
         } else {
-            log.warn("⚠️ Comentario {} sin autor (from). Se guardará con from_id null", fbComment.getId());
+            //log.warn("⚠️ Comentario {} sin autor (from). Se guardará con from_id null", fbComment.getId());
         }
 
         collector.add(builder.build());

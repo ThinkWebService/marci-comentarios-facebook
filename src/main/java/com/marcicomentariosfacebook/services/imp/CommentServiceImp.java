@@ -57,14 +57,16 @@ public class CommentServiceImp implements CommentService {
                 );
     }
 
-
     @Override
-    public Mono<Void> saveAll(List<Comment> comments) {
+    public Flux<Comment> saveAll(List<Comment> comments) {
         return Flux.fromIterable(comments)
-                .concatMap(this::save)
-                .then();
+                .concatMap(this::save);
     }
 
+    @Override
+    public Flux<Comment> findAllByParentId(String id) {
+        return commentRepository.findByParentId(id);
+    }
 
     @Override
     public Mono<Comment> findById(String id) {
@@ -111,7 +113,7 @@ public class CommentServiceImp implements CommentService {
                             .agent_user(commentRequest.getMessage())
                             .agent_user(commentRequest.getAgent_user())
                             .auto_answered(false)
-                            .parent_id(parent_id)
+                            .parentId(parent_id)
                             .response_type(commentRequest.getResponse_type())
                             .build();
                     log.info("📝 Comentario respondido manualmente a guardar: {}", replyComment);

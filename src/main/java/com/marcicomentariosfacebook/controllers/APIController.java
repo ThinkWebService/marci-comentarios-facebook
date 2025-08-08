@@ -1,7 +1,10 @@
 package com.marcicomentariosfacebook.controllers;
 
 import com.marcicomentariosfacebook.client.FACEBOOK.services.APIGraphService;
+import com.marcicomentariosfacebook.client.LHIA.service.ApiLhiaService;
+import com.marcicomentariosfacebook.client.LHIA.service.MejoraService;
 import com.marcicomentariosfacebook.dtos.CommentRequest;
+import com.marcicomentariosfacebook.dtos.request.RespuestaIARequest;
 import com.marcicomentariosfacebook.model.*;
 import com.marcicomentariosfacebook.services.*;
 import jakarta.validation.Valid;
@@ -11,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @Slf4j
@@ -25,6 +30,9 @@ public class APIController {
     private final PageService pageService;
     private final ReactionService reactionService;
     private final FromService fromService;
+    private final ApiLhiaService apiLhiaService;
+    private final PlantillaService plantillaService;
+    private final MejoraService mejoraService;
 
     @GetMapping("/page")
     public Mono<Page> getPages() {
@@ -65,4 +73,22 @@ public class APIController {
                 .map(ResponseEntity::ok);
     }
 
+    //ENDPOINTS PARA TIPOS DE SUGERENCIAS: LHIA o MEJORA o PLANTILLA
+    @PostMapping("/sugerencia/lhia")
+    public Mono<ResponseEntity<String>> getSugerenciaLHIA(@Valid @RequestBody RespuestaIARequest request) {
+        return apiLhiaService.sendMesssageToLhia(request.getContext())
+                .map(ResponseEntity::ok);
+    }
+
+    @PostMapping("/sugerencia/mejora")
+    public Mono<ResponseEntity<List<String>>> getSugerenciaMejora(@Valid @RequestBody RespuestaIARequest request) {
+        return mejoraService.sendMesssageToMejora(request.getContext())
+                .collectList()  // Flux<String> -> Mono<List<String>>
+                .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/sugerencia/plantillas")
+    public Flux<Plantilla> getPlantilla() {
+        return plantillaService.findAll();
+    }
 }
