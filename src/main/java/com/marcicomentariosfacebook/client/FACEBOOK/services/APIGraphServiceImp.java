@@ -1,5 +1,6 @@
 package com.marcicomentariosfacebook.client.FACEBOOK.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbCommentsReactionsResp;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPageResp;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPostsResp;
@@ -150,6 +151,28 @@ public class APIGraphServiceImp implements APIGraphService{
                 .onErrorResume(e -> {
                     log.warn("No se pudieron cargar comentarios del attachment {}", attachment.getId(), e);
                     return Mono.just(attachment); // deja el attachment sin comentarios si hay error
+                });
+    }
+
+    // ELIMINAR UNA RESPUESTA(COMENTARIO) DE FACEBOOK
+    @Override
+    public Mono<Boolean> deleteComment(String commentId) {
+        String URL = env.getProperty("facebook.api.remove.comment").replace("{comment_id}", commentId);
+        String TOKEN = env.getProperty("facebook.api.bearer.token");
+
+        log.info("DELETE FACEBOOK: {}", URL);
+
+        return webClient.build()
+                .delete()
+                .uri(URL)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .map(json -> json.has("success") && json.get("success").asBoolean(false))
+                .doOnNext(success -> log.info("Eliminación exitosa: {}", success))
+                .onErrorResume(e -> {
+                    log.error("❌ Error eliminando comentario", e);
+                    return Mono.just(false);
                 });
     }
 }

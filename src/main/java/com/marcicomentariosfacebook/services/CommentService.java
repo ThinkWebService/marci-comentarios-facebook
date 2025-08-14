@@ -3,6 +3,7 @@ package com.marcicomentariosfacebook.services;
 import com.marcicomentariosfacebook.dtos.CommentRequest;
 import com.marcicomentariosfacebook.model.Comment;
 import com.marcicomentariosfacebook.model.ResponseType;
+import com.marcicomentariosfacebook.services.factory.CommentEventoHandler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -16,7 +17,6 @@ public interface CommentService {
 
     Flux<Comment> findAllByParentId(String id);
 
-
     Mono<Comment> findById(String id);
 
     Flux<Comment> findAll();
@@ -24,4 +24,6 @@ public interface CommentService {
     Mono<Void> responderComentarioAutomatico(String parent_id, String parent_message);
 
     Mono<Comment> responderComentarioManual(String parent_id, CommentRequest commentRequest);
+    Mono<Comment> editarComentario(String comment_id, CommentRequest commentRequest);
+    Mono<Comment> eliminarComentario(String comment_id, String agent_username);
 }

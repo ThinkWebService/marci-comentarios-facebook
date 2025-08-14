@@ -46,4 +46,9 @@ public class ReactionServiceImp implements ReactionService {
     public Flux<Reaction> findAll() {
         return reactionRepository.findAll();
     }
+
+    @Override
+    public Flux<Reaction> findByPostId(String id) {
+        return reactionRepository.findReactionsByPostId(id);
+    }
 }

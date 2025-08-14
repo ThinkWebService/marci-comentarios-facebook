@@ -7,6 +7,7 @@ import com.marcicomentariosfacebook.model.Comment;
 import com.marcicomentariosfacebook.model.ResponseType;
 import com.marcicomentariosfacebook.repositories.CommentRepository;
 import com.marcicomentariosfacebook.services.CommentService;
+import com.marcicomentariosfacebook.websocket.CommentWebSocketHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -25,6 +26,7 @@ public class CommentServiceImp implements CommentService {
     private final APIGraphService apiGraphService;
     private final ApiLhiaService apiLhiaService;
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
+    private final CommentWebSocketHandler commentWebSocketHandler;
 
     @Override
     public Mono<Comment> save(Comment comment) {
@@ -33,6 +35,15 @@ public class CommentServiceImp implements CommentService {
                     // Asignar 'add' si ambos son null
                     if (comment.getVerb() == null && existing.getVerb() == null) {
                         comment.setVerb("add");
+
+                    } else{
+                        // CASO ESPECIAL: comentarios que parecen editados
+                        // No se sobreescribe "add" en comentarios "editados manualmente"
+                        // En realidad, no se modificó el mismo comentario, sino que se creó uno nuevo
+                        // para simular la edición. Esto evita falsos sobrescritos de "add".
+                        if(existing.getPreviousVersionId() != null && "edited".equals(existing.getVerb())){
+                            comment.setVerb("edited");
+                        }
                     }
 
                     // Asignar FACEBOOK si ambos son null
@@ -110,7 +121,6 @@ public class CommentServiceImp implements CommentService {
                 .flatMap(new_comment_id -> {
                     Comment replyComment = Comment.builder()
                             .id(new_comment_id)
-                            .agent_user(commentRequest.getMessage())
                             .agent_user(commentRequest.getAgent_user())
                             .auto_answered(false)
                             .parentId(parent_id)
@@ -126,4 +136,48 @@ public class CommentServiceImp implements CommentService {
                 });
     }
 
+
+    @Override
+    public Mono<Comment> eliminarComentario(String comment_id, String agent_username) {
+        return commentRepository.findById(comment_id)
+                .flatMap(comment ->
+                        apiGraphService.deleteComment(comment_id)
+                                .flatMap(eliminado -> {
+                                    if (Boolean.TRUE.equals(eliminado)) {
+                                        // comment.setVerb("REMOVE"); // ya se actualiza con evento
+                                        comment.setAgent_user(agent_username);
+                                        return commentRepository.save(comment);
+                                    }
+                                    return Mono.empty();
+                                })
+                )
+                .doOnError(e -> log.error("Error eliminando comentario: ", e));
+    }
+
+    // Este método elimina un comentario existente y crea uno nuevo para NOTIFICAR la edición(nueva respuesta)
+    @Override
+    public Mono<Comment> editarComentario(String comment_id, CommentRequest request) {
+        return eliminarComentario(comment_id, request.getAgent_user())
+                .flatMap(originalComment -> {
+                    if (originalComment != null) {
+                        return apiGraphService.replyComment(originalComment.getParentId(), request.getMessage())
+                                .flatMap(new_comment_id -> {
+                                    Comment editedComment = Comment.builder()
+                                            .id(new_comment_id)
+                                            .agent_user(request.getAgent_user())
+                                            .auto_answered(false)
+                                            .parentId(originalComment.getParentId())
+                                            .response_type(request.getResponse_type())
+                                            .verb("edited")
+                                            .previousVersionId(originalComment.getId())
+                                            .build();
+                                    log.info("📝 Comentario editado desde LHIA-MIND guardado: {}", editedComment);
+                                    return save(editedComment);
+                                });
+                    } else {
+                        return Mono.empty();
+                    }
+                })
+                .doOnError(e -> log.error("❌ Error editando comentario", e));
+    }
 }

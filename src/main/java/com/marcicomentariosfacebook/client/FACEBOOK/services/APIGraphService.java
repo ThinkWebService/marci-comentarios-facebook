@@ -22,4 +22,8 @@ public interface APIGraphService {
 
     // Responder a un comentario
     Mono<String> replyComment(String commentId, String message);
+
+    Mono<Boolean> deleteComment(String commentId);
+
+
 }

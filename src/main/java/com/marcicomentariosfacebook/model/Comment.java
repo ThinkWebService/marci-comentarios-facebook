@@ -28,6 +28,8 @@ public class Comment {
     private String parentId;
     private String post_id;
     private ResponseType response_type;
+    @Column("previous_version_id")
+    private String previousVersionId;      // versionamiento, apunta a la versión anterior
 
     public Comment mergeNonNull(Comment other) {
         CommentBuilder builder = this.toBuilder();
@@ -42,6 +44,7 @@ public class Comment {
         if (other.getParentId() != null) builder.parentId(other.getParentId());
         if (other.getPost_id() != null) builder.post_id(other.getPost_id());
         if (other.getResponse_type() != null) builder.response_type(other.getResponse_type());
+        if (other.getPreviousVersionId() != null) builder.previousVersionId(other.getPreviousVersionId());
 
         return builder.build();
     }

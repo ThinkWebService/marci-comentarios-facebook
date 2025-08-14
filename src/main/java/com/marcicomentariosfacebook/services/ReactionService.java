@@ -10,4 +10,5 @@ public interface ReactionService {
     Mono<Reaction> findById(Long id);
 
     Flux<Reaction> findAll();
+    Flux<Reaction> findByPostId(String id);
 }

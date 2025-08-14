@@ -16,11 +16,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin("*")
 @Slf4j
 @RestController
-@RequestMapping("/acf")//ApiCommentsFacebook
+@RequestMapping("/api")//ApiCommentsFacebook
 @RequiredArgsConstructor
 public class APIController {
 
@@ -54,6 +55,12 @@ public class APIController {
         return reactionService.findAll();
     }
 
+    @GetMapping("/reactions/{post_id}")
+    public Flux<Reaction> getReactionsByPostId(@PathVariable String post_id) {
+        return reactionService.findByPostId(post_id);
+    }
+
+
     @GetMapping("/froms")
     public Flux<From> getFroms() {
         return fromService.findAll();
@@ -73,11 +80,25 @@ public class APIController {
                 .map(ResponseEntity::ok);
     }
 
+    // Editar comentario existente en Facebook (ELIMINAR EXISTENTE RESPONDER UNO NUEVO)
+    @PostMapping("/comments/edit/{comment_id}")
+    public Mono<ResponseEntity<Comment>> editComment(@PathVariable String comment_id, @Valid @RequestBody CommentRequest request) {
+        return commentService.editarComentario(comment_id, request)
+                .map(ResponseEntity::ok);
+    }
+
+    // Eliminar comentario en Facebook
+    @DeleteMapping("/comments/remove/{comment_id}")
+    public Mono<ResponseEntity<Comment>> removeComment(@PathVariable String comment_id, @RequestParam String agent_user) {
+        return commentService.eliminarComentario(comment_id, agent_user)
+                .map(ResponseEntity::ok);
+    }
+
     //ENDPOINTS PARA TIPOS DE SUGERENCIAS: LHIA o MEJORA o PLANTILLA
     @PostMapping("/sugerencia/lhia")
-    public Mono<ResponseEntity<String>> getSugerenciaLHIA(@Valid @RequestBody RespuestaIARequest request) {
+    public Mono<ResponseEntity<Map<String, String>>> getSugerenciaLHIA(@Valid @RequestBody RespuestaIARequest request) {
         return apiLhiaService.sendMesssageToLhia(request.getContext())
-                .map(ResponseEntity::ok);
+                .map(respuesta -> ResponseEntity.ok(Map.of("message", respuesta)));
     }
 
     @PostMapping("/sugerencia/mejora")

@@ -1,55 +1,55 @@
 -- Tabla: page
 CREATE TABLE IF NOT EXISTS page (
-                                    id TEXT PRIMARY KEY,
-                                    name TEXT,
-                                    description TEXT,
-                                    username TEXT,
-                                    category TEXT,
-                                    link TEXT,
-                                    fan_count INT,
-                                    followers_count INT,
-                                    cover_url TEXT,
-                                    profile_url TEXT,
-                                    verified BOOLEAN
+    id TEXT PRIMARY KEY,
+    name TEXT,
+    description TEXT,
+    username TEXT,
+    category TEXT,
+    link TEXT,
+    fan_count INT,
+    followers_count INT,
+    cover_url TEXT,
+    profile_url TEXT,
+    verified BOOLEAN
 );
 
 -- Tabla: post
 CREATE TABLE IF NOT EXISTS post (
-                                    id TEXT PRIMARY KEY,
-                                    message TEXT,
-                                    full_picture TEXT,
-                                    permalink_url TEXT,
-                                    created_time TIMESTAMP DEFAULT NOW(),
+    id TEXT PRIMARY KEY,
+    message TEXT,
+    full_picture TEXT,
+    permalink_url TEXT,
+    created_time TIMESTAMP DEFAULT NOW(),
     updated_time TIMESTAMP DEFAULT NOW(),
     story TEXT,
     status_type TEXT,
     published BOOLEAN,
     page_id TEXT REFERENCES page(id) ON DELETE CASCADE
-    );
+);
 
 -- Tabla: reaction
 CREATE TABLE IF NOT EXISTS reaction (
-                                        id BIGSERIAL PRIMARY KEY,
-                                        user_id TEXT,
-                                        user_name TEXT,
-                                        type TEXT,
-                                        verb TEXT,
-                                        comment_id TEXT,
-                                        post_id TEXT REFERENCES post(id) ON DELETE CASCADE,
+    id BIGSERIAL PRIMARY KEY,
+    user_id TEXT,
+    user_name TEXT,
+    type TEXT,
+    verb TEXT,
+    comment_id TEXT,
+    post_id TEXT REFERENCES post(id) ON DELETE CASCADE,
     created_time TIMESTAMP DEFAULT NOW()
-    );
+);
 
 -- Tabla: fb_user (equivalente a clase From)
 CREATE TABLE IF NOT EXISTS fb_user (
-                                       id TEXT PRIMARY KEY,
-                                       name TEXT
+    id TEXT PRIMARY KEY,
+    name TEXT
 );
 
 -- Tabla: comment
 CREATE TABLE IF NOT EXISTS comment (
-                                       id TEXT PRIMARY KEY,
-                                       message TEXT,
-                                       created_time TIMESTAMP DEFAULT NOW(),
+    id TEXT PRIMARY KEY,
+    message TEXT,
+    created_time TIMESTAMP DEFAULT NOW(),
     updated_time TIMESTAMP DEFAULT NOW(),
     verb TEXT,
     auto_answered BOOLEAN,
@@ -57,22 +57,23 @@ CREATE TABLE IF NOT EXISTS comment (
     from_id TEXT REFERENCES fb_user(id),
     parent_id TEXT REFERENCES comment(id),
     post_id TEXT REFERENCES post(id) ON DELETE CASCADE,
-    response_type TEXT
+    response_type TEXT,
+    previous_version_id TEXT REFERENCES comment(id)
     );
 
 -- Tabla: attachment
 CREATE TABLE IF NOT EXISTS attachment (
-                                          id TEXT PRIMARY KEY,
-                                          media_type TEXT,
-                                          media_image TEXT,
-                                          media_source TEXT,
-                                          url TEXT,
-                                          create_time TIMESTAMP DEFAULT NOW(),
+    id TEXT PRIMARY KEY,
+    media_type TEXT,
+    media_image TEXT,
+    media_source TEXT,
+    url TEXT,
+    create_time TIMESTAMP DEFAULT NOW(),
     update_time TIMESTAMP DEFAULT NOW(),
     verb TEXT,
     message TEXT,
     post_id TEXT REFERENCES post(id) ON DELETE CASCADE
-    );
+);
 
 CREATE TABLE IF NOT EXISTS plantilla (
     id TEXT PRIMARY KEY,
@@ -115,41 +116,47 @@ SELECT
                        WHEN c.response_type IS NOT NULL AND c.auto_answered = FALSE THEN c.id
         END) AS agente_respondidos,
 
+    -- Respuestas por tipo SOLO con parent_id (son respuestas a comentarios)
     COUNT(DISTINCT CASE
-                       WHEN c.response_type = 'FACEBOOK' THEN c.id
+                       WHEN c.response_type = 'FACEBOOK' AND c.parent_id IS NOT NULL THEN c.id
         END) AS respuestas_facebook,
 
     COUNT(DISTINCT CASE
-                       WHEN c.response_type = 'LHIA' THEN c.id
+                       WHEN c.response_type = 'LHIA' AND c.parent_id IS NOT NULL THEN c.id
         END) AS respuestas_lhia,
 
     COUNT(DISTINCT CASE
-                       WHEN c.response_type = 'SIMPLE' THEN c.id
+                       WHEN c.response_type = 'SIMPLE' AND c.parent_id IS NOT NULL THEN c.id
         END) AS respuestas_simple,
 
     COUNT(DISTINCT CASE
-                       WHEN c.response_type = 'PLANTILLA' THEN c.id
+                       WHEN c.response_type = 'PLANTILLA' AND c.parent_id IS NOT NULL THEN c.id
         END) AS respuestas_plantilla,
 
     COUNT(DISTINCT CASE
-                       WHEN c.response_type = 'MEJORADA' THEN c.id
+                       WHEN c.response_type = 'MEJORADA' AND c.parent_id IS NOT NULL THEN c.id
         END) AS respuestas_mejoradas,
 
-    (
-        SELECT AVG(EXTRACT(EPOCH FROM (child.created_time - parent.created_time)))
-        FROM comment child
-                 JOIN comment parent ON child.parent_id = parent.id
-        WHERE child.auto_answered = TRUE
-          AND parent.post_id = p.id
+    -- Segundos de respuesta (no negativos)
+    GREATEST(
+            (
+                SELECT AVG(EXTRACT(EPOCH FROM (child.created_time - parent.created_time)))
+                FROM comment child
+                         JOIN comment parent ON child.parent_id = parent.id
+                WHERE child.auto_answered = TRUE
+                  AND parent.post_id = p.id
+            ), 0
     ) AS segundos_respuesta_auto,
 
-    (
-        SELECT AVG(EXTRACT(EPOCH FROM (child.created_time - parent.created_time)))
-        FROM comment child
-                 JOIN comment parent ON child.parent_id = parent.id
-        WHERE child.auto_answered = FALSE
-          AND child.response_type IS NOT NULL
-          AND parent.post_id = p.id
+    GREATEST(
+            (
+                SELECT AVG(EXTRACT(EPOCH FROM (child.created_time - parent.created_time)))
+                FROM comment child
+                         JOIN comment parent ON child.parent_id = parent.id
+                WHERE child.auto_answered = FALSE
+                  AND child.response_type IS NOT NULL
+                  AND parent.post_id = p.id
+            ), 0
     ) AS segundos_respuesta_agente,
 
     COUNT(DISTINCT r.id) AS reacciones,
