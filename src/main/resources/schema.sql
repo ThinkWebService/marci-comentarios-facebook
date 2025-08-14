@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS post (
     story TEXT,
     status_type TEXT,
     published BOOLEAN,
-    page_id TEXT REFERENCES page(id) ON DELETE CASCADE
+    page_id TEXT REFERENCES page(id) ON DELETE CASCADE,
+    verb TEXT
 );
 
 -- Tabla: reaction

@@ -41,7 +41,7 @@ public class MapperCommentsReactions {
                 .message(fbComment.getMessage())
                 .created_time(fbComment.getCreated_time())
                 .parentId(parentId)
-                .post_id(postId);
+                .postId(postId);
 
         if (fbComment.getFrom() != null) {
             builder.from_id(fbComment.getFrom().getId());

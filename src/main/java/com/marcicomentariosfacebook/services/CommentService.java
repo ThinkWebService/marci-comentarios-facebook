@@ -19,6 +19,8 @@ public interface CommentService {
 
     Mono<Comment> findById(String id);
 
+    Flux<Comment> findByPostId(String post_id);
+
     Flux<Comment> findAll();
 
     Mono<Void> responderComentarioAutomatico(String parent_id, String parent_message);

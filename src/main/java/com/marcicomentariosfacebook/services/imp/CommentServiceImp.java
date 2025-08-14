@@ -85,6 +85,11 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
+    public Flux<Comment> findByPostId(String post_id) {
+        return commentRepository.findByPostId(post_id);
+    }
+
+    @Override
     public Flux<Comment> findAll() {
         return commentRepository.findAll();
     }

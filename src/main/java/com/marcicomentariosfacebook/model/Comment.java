@@ -26,7 +26,7 @@ public class Comment {
     private String from_id;
     @Column("parent_id")
     private String parentId;
-    private String post_id;
+    private String postId;
     private ResponseType response_type;
     @Column("previous_version_id")
     private String previousVersionId;      // versionamiento, apunta a la versión anterior
@@ -42,7 +42,7 @@ public class Comment {
         if (other.getAgent_user() != null) builder.agent_user(other.getAgent_user());
         if (other.getFrom_id() != null) builder.from_id(other.getFrom_id());
         if (other.getParentId() != null) builder.parentId(other.getParentId());
-        if (other.getPost_id() != null) builder.post_id(other.getPost_id());
+        if (other.getPostId() != null) builder.postId(other.getPostId());
         if (other.getResponse_type() != null) builder.response_type(other.getResponse_type());
         if (other.getPreviousVersionId() != null) builder.previousVersionId(other.getPreviousVersionId());
 

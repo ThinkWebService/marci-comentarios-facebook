@@ -35,7 +35,7 @@ public class MapperComment {
                 .verb(value.getVerb())
                 .from_id(value.getFrom() != null ? value.getFrom().getId() : null)
                 .parentId(parentId)
-                .post_id(postId)
+                .postId(postId)
                 .build();
 
         return Mono.just(comment);

@@ -27,4 +27,5 @@ public class Post {
     private String status_type;
     private boolean published;
     private String page_id;
+    private String verb;
 }
