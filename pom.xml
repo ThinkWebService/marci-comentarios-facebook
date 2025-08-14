@@ -55,8 +55,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.1.Final</version> <!-- O la versión compatible más reciente -->
         </dependency>
-
-
         <!-- SWAGGER -->
         <dependency>
             <groupId>org.springdoc</groupId>
