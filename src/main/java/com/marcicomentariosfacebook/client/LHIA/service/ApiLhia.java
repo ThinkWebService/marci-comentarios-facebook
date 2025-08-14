@@ -46,9 +46,10 @@ public class ApiLhia implements ApiLhiaService {
 				});
 	}
 
+
 	@Override
 	public Mono<String> sendMesssageToLhia(String message) {
-		String urlRespuesta = env.getProperty("lhia.request");
+		String urlRespuesta = env.getProperty("lhia.request.url");
 		log.info("Enviando mensaje a LHIA: {}", message);
 
 		// Crear objeto de request local

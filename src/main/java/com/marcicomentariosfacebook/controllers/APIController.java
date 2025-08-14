@@ -112,4 +112,14 @@ public class APIController {
     public Flux<Plantilla> getPlantilla() {
         return plantillaService.findAll();
     }
+
+    // Actualizar estado de auto_answered en un Post
+    @PostMapping("/posts/auto-answered/{post_id}")
+    public Mono<ResponseEntity<Post>> updateAutoAnswered(
+            @PathVariable String post_id,
+            @RequestParam boolean auto_answered) {
+        return postService.setAutoanswered(post_id, auto_answered)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 }

@@ -28,4 +28,5 @@ public class Post {
     private boolean published;
     private String page_id;
     private String verb;
+    private boolean auto_answered;
 }

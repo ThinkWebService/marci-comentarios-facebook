@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestQuestionLhia {
 	private String message;
-	private String descripcion;
 	private String usuario;
+	private String descripcion;
 	private String identificador;
+	private String idPlatform;
+	private String platform;
 }

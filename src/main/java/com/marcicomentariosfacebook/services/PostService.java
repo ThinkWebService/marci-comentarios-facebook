@@ -15,4 +15,6 @@ public interface PostService {
     Flux<Post> findAll();
     Mono<Post> editar(Post post);
     Mono<Post> eliminar(String post_id);
+
+    Mono<Post> setAutoanswered(String post_id, boolean auto_answered);
 }

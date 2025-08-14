@@ -83,4 +83,12 @@ public class PostServiceImp implements PostService {
                 });
     }
 
+    @Override
+    public Mono<Post> setAutoanswered(String postId, boolean auto_answered) {
+        return postRepository.findById(postId)
+                .flatMap(existing -> {
+                    existing.setAuto_answered(auto_answered);
+                    return postRepository.save(existing);
+                });
+    }
 }

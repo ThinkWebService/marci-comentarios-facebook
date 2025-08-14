@@ -3,10 +3,12 @@ package com.marcicomentariosfacebook.services.factory;
 import com.marcicomentariosfacebook.dtos.WebhookPayload;
 import com.marcicomentariosfacebook.model.Comment;
 import com.marcicomentariosfacebook.model.From;
+import com.marcicomentariosfacebook.model.Post;
 import com.marcicomentariosfacebook.model.ResponseType;
 import com.marcicomentariosfacebook.services.CommentService;
 import com.marcicomentariosfacebook.services.EventoHandler;
 import com.marcicomentariosfacebook.services.FromService;
+import com.marcicomentariosfacebook.services.PostService;
 import com.marcicomentariosfacebook.utils.maper.events.MapperComment;
 import com.marcicomentariosfacebook.websocket.CommentWebSocketHandler;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class CommentEventoHandler implements EventoHandler {
     private final CommentService commentService;
     private final MapperComment mapperComment;
     private final FromService fromService;
+    private final PostService postService;
 
     @Override
     public Mono<Void> manejar(String verb, WebhookPayload.Value value) {
@@ -107,6 +110,7 @@ public class CommentEventoHandler implements EventoHandler {
             commentSaved = commentService.save(comment);
         }
 
+
         return commentSaved.flatMap(savedComment ->
                 commentWebSocketHandler.publishComment(savedComment)
                         .then(Mono.defer(() -> {
@@ -114,9 +118,21 @@ public class CommentEventoHandler implements EventoHandler {
                                     && !savedComment.getFrom_id().equals(pageId)
                                     && savedComment.getMessage() != null;
 
-                            return esCliente
-                                    ? commentService.responderComentarioAutomatico(savedComment.getId(), savedComment.getMessage())
-                                    : Mono.empty();
+                            if (!esCliente) {
+                                return Mono.empty();
+                            }
+
+                            // Verificar que el post exista y tenga auto_answered = true
+                            return postService.findById(savedComment.getPostId())
+                                    .filter(Post::isAuto_answered) // Solo si está habilitado autorespuesta
+                                    .flatMap(post -> commentService.responderComentarioAutomatico(
+                                            savedComment.getId(),
+                                            savedComment.getMessage()
+                                    ))
+                                    .switchIfEmpty(Mono.fromRunnable(() ->
+                                            log.info("⛔ No se auto-responde el comentario [{}] porque el post [{}] no tiene auto_answered=true",
+                                                    savedComment.getId(), savedComment.getPostId())
+                                    ));
                         }))
         );
     }
@@ -144,7 +160,6 @@ public class CommentEventoHandler implements EventoHandler {
                 .then();
     }
 
-
     /**
      * Recursivamente obtiene todos los descendientes del comentario, incluyendo el padre.
      */
@@ -153,6 +168,5 @@ public class CommentEventoHandler implements EventoHandler {
                 .flatMap(child -> collectAllDescendants(child)) // recursión
                 .startWith(parent); // incluye el comentario actual (padre)
     }
-
 
 }
