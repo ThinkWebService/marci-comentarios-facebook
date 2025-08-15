@@ -12,9 +12,10 @@ public interface PlantillaService {
 
     Mono<Plantilla> save(Plantilla plantilla);
 
-    Mono<Plantilla> findById(String id);
+    Mono<Void> deleteById(Long id);
+
+    Mono<Plantilla> findById(Long id);
 
     Flux<Plantilla> findAll();
 
-    Flux<Plantilla> saveAll(List<Plantilla> plantillas);
 }

@@ -77,13 +77,25 @@ CREATE TABLE IF NOT EXISTS attachment (
     post_id TEXT REFERENCES post(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS plantilla (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
+-- Tabla para tipos de plantilla con ID autoincrementable
+CREATE TABLE IF NOT EXISTS plantilla_type (
+    id BIGSERIAL PRIMARY KEY,
+    nombre TEXT NOT NULL,
     descripcion TEXT,
-    enlace TEXT,
-    plantilla_type TEXT NOT NULL
+    create_time TIMESTAMP DEFAULT NOW(),
+    update_time TIMESTAMP DEFAULT NOW()
 );
+
+-- Tabla de plantillas con ID autoincrementable
+CREATE TABLE IF NOT EXISTS plantilla (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    contenido TEXT NOT NULL,
+    type_id BIGINT NOT NULL REFERENCES plantilla_type(id),
+    create_time TIMESTAMP DEFAULT NOW(),
+    update_time TIMESTAMP DEFAULT NOW()
+);
+
 
 CREATE OR REPLACE VIEW vista_resumen AS
 SELECT
