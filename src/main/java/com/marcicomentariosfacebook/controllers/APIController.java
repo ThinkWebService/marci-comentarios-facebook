@@ -5,11 +5,13 @@ import com.marcicomentariosfacebook.client.LHIA.service.ApiLhiaService;
 import com.marcicomentariosfacebook.client.LHIA.service.MejoraService;
 import com.marcicomentariosfacebook.dtos.CommentRequest;
 import com.marcicomentariosfacebook.dtos.request.RespuestaIARequest;
+import com.marcicomentariosfacebook.exception.ConflictException;
 import com.marcicomentariosfacebook.model.*;
 import com.marcicomentariosfacebook.services.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -138,9 +140,10 @@ public class APIController {
     @DeleteMapping("/plantilla/{id}")
     public Mono<ResponseEntity<Boolean>> deletePlantilla(@PathVariable Long id) {
         return plantillaService.deleteById(id)
-                .map(deleted -> ResponseEntity.ok(true))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+                .then(Mono.just(ResponseEntity.ok(true))) // devuelve true después de eliminar
+                .onErrorReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false));
     }
+
 
     // ---------------- TIPOS DE PLANTILLA ----------------
 
@@ -157,6 +160,9 @@ public class APIController {
     public Mono<ResponseEntity<Boolean>> deletePlantillaType(@PathVariable Long id) {
         return plantillaTypeService.deleteById(id)
                 .map(deleted -> ResponseEntity.ok(true))
+                .onErrorResume(ConflictException.class, e ->
+                        Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).body(false))
+                )
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 

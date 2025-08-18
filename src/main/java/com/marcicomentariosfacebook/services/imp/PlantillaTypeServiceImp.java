@@ -1,5 +1,6 @@
 package com.marcicomentariosfacebook.services.imp;
 
+import com.marcicomentariosfacebook.exception.ConflictException;
 import com.marcicomentariosfacebook.model.PlantillaType;
 import com.marcicomentariosfacebook.repositories.PlantillaRepository;
 import com.marcicomentariosfacebook.repositories.PlantillaTypeRepository;
@@ -21,20 +22,24 @@ public class PlantillaTypeServiceImp implements PlantillaTypeService {
 
     @Override
     public Mono<PlantillaType> save(PlantillaType plantillaType) {
+        // Si el id es 0, asignamos null para que R2DBC inserte un nuevo registro
+        if (plantillaType.getId() != null && plantillaType.getId() == 0) {
+            plantillaType.setId(null);
+        }
         return plantillaTypeRepository.save(plantillaType);
     }
 
     @Override
     public Mono<Boolean> deleteById(Long id) {
-        return plantillaTypeRepository.existsById(id)
-                .flatMap(exists -> !exists ? Mono.just(false) :
-                        plantillaRepository.existsByTypeId(id)
-                                .flatMap(hasPlantillas -> hasPlantillas ? Mono.just(false) :
-                                        plantillaTypeRepository.deleteById(id).thenReturn(true)
-                                                .onErrorReturn(false)
-                                )
-                );
+        return plantillaRepository.existsByTypeId(id)
+                .flatMap(exists -> {
+                    if (exists) {
+                        return Mono.error(new ConflictException("No se puede eliminar: hay plantillas asociadas"));
+                    }
+                    return plantillaTypeRepository.deleteById(id).thenReturn(true);
+                });
     }
+
 
     @Override
     public Mono<PlantillaType> findById(Long id) {

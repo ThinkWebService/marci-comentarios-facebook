@@ -14,7 +14,11 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+
+import java.time.Duration;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @AllArgsConstructor
 @Component
@@ -23,7 +27,8 @@ public class ResumenWebSocketHandler implements WebSocketHandler {
 
     private final VistaResumenService vistaResumenService;
 
-    private final Sinks.Many<String> sink = Sinks.many().multicast().onBackpressureBuffer();
+    // 🔹 Un sink por cliente
+    private final Map<String, Sinks.Many<String>> sessionSinks = new ConcurrentHashMap<>();
 
     private final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
@@ -31,43 +36,49 @@ public class ResumenWebSocketHandler implements WebSocketHandler {
 
     @Override
     public Mono<Void> handle(WebSocketSession session) {
-        log.info("Cliente conectado: {}", session.getId());
+        String sessionId = session.getId();
+        log.info("✅ Cliente {} empezó a recibir actualizaciones de resúmenes", sessionId);
 
-        // Enviar datos actuales al conectarse (una sola vez)
+        // Sink exclusivo para este cliente
+        Sinks.Many<String> sink = Sinks.many().multicast().onBackpressureBuffer();
+        sessionSinks.put(sessionId, sink);
+
+        // 🔹 Al conectar, mandar el resumen inicial
         Mono<Void> sendInitial = vistaResumenService.findAllResumen()
                 .collectList()
                 .flatMap(list -> {
                     try {
                         String json = mapper.writeValueAsString(list);
-                        return session.send(Mono.just(session.textMessage(json)));
+                        sink.tryEmitNext(json);
                     } catch (Exception e) {
                         log.error("Error serializando resúmenes iniciales", e);
-                        return Mono.empty();
                     }
+                    return Mono.empty();
                 });
 
-        // Flux para enviar mensajes en tiempo real (desde el sink)
-        Flux<WebSocketMessage> sendUpdates = sink.asFlux()
+        // 🔹 Mantener actualizaciones + keepAlive
+        Flux<WebSocketMessage> outgoing = sink.asFlux()
+                .mergeWith(Flux.interval(Duration.ofSeconds(30))
+                        .map(t -> "{\"type\":\"ping\"}"))
                 .map(session::textMessage);
 
-        // Enviar primero los datos iniciales y luego las actualizaciones continuas
-        Mono<Void> sendAll = session.send(Flux.concat(sendInitial.thenMany(sendUpdates)));
-
-        // Recibir mensajes para logging, no se cierra la conexión por esto
-        Mono<Void> receive = session.receive()
-                .doOnNext(msg -> log.debug("Mensaje recibido de cliente {}: {}", session.getId(), msg.getPayloadAsText()))
+        // 🔹 Limpieza cuando se desconecta
+        Mono<Void> input = session.receive()
+                .doFinally(signal -> {
+                    sessionSinks.remove(sessionId);
+                    log.info("❌ Cliente {} dejó de recibir actualizaciones de resúmenes", sessionId);
+                })
                 .then();
 
-        // Log cuando la conexión finalice (por cualquier motivo)
-        return Mono.when(sendAll, receive)
-                .doFinally(signalType -> log.info("Cliente desconectado: {}, motivo: {}", session.getId(), signalType));
+        return sendInitial.then(session.send(outgoing).and(input));
     }
 
-    // Método para enviar datos a todos los clientes conectados
+    // Método para enviar actualizaciones a TODOS los clientes conectados
     public Mono<Void> emitirResumen(List<VistaResumen> resumenes) {
         try {
             String json = mapper.writeValueAsString(resumenes);
-            sink.tryEmitNext(json);
+            sessionSinks.values().forEach(sink -> sink.tryEmitNext(json));
+            log.info("📢 Enviando resumen a {} clientes", sessionSinks.size());
             return Mono.empty();
         } catch (Exception e) {
             log.error("Error enviando resumen", e);

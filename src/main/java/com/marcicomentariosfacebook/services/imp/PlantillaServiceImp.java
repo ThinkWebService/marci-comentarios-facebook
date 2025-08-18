@@ -18,6 +18,10 @@ public class PlantillaServiceImp implements PlantillaService {
 
     @Override
     public Mono<Plantilla> save(Plantilla plantilla) {
+        // Si el id es 0, asignamos null para que R2DBC inserte un nuevo registro
+        if (plantilla.getId() != null && plantilla.getId() == 0) {
+            plantilla.setId(null);
+        }
         return plantillaRepository.save(plantilla);
     }
 
