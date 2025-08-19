@@ -168,5 +168,4 @@ public class CommentEventoHandler implements EventoHandler {
                 .flatMap(child -> collectAllDescendants(child)) // recursión
                 .startWith(parent); // incluye el comentario actual (padre)
     }
-
 }

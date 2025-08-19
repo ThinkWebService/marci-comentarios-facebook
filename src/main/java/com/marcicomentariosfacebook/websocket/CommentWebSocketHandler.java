@@ -19,22 +19,18 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- *
- *
- * */
 @AllArgsConstructor
 @Component
 @Slf4j
 public class CommentWebSocketHandler implements WebSocketHandler {
 
-    private final Map<String, Sinks.Many<String>> commentSinks = new ConcurrentHashMap<>();
-    private final Map<String, Sinks.Many<String>> reactionSinks = new ConcurrentHashMap<>();
-    private final Map<String, Sinks.Many<String>> postSinks = new ConcurrentHashMap<>();
-    private final Map<String, Sinks.Many<String>> fromSinks = new ConcurrentHashMap<>();
+    // 🔹 Sinks por cliente
+    private final Map<String, Sinks.Many<String>> sessionSinks = new ConcurrentHashMap<>();
 
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
@@ -43,27 +39,29 @@ public class CommentWebSocketHandler implements WebSocketHandler {
     @Override
     @NonNull
     public Mono<Void> handle(WebSocketSession session) {
-        // Para simplificar, enviamos TODO tipo de eventos a todos los clientes.
-        // En producción, puedes hacer suscripciones filtradas.
+        String sessionId = session.getId();
+        log.info("✅ Cliente {} empezó a recibir actualizaciones de comentarios", sessionId);
 
-        // Un solo sink que mezcla todos tipos
-        Sinks.Many<String> combinedSink = Sinks.many().multicast().onBackpressureBuffer();
+        // Sink exclusivo para este cliente
+        Sinks.Many<String> sink = Sinks.many().multicast().onBackpressureBuffer();
+        sessionSinks.put(sessionId, sink);
 
-        // Registramos los sinks para enviar a combinedSink
-        commentSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
-        reactionSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
-        postSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
-        fromSinks.values().forEach(sink -> sink.asFlux().subscribe(combinedSink::tryEmitNext));
-
-        Flux<WebSocketMessage> outgoingMessages = combinedSink.asFlux()
+        Flux<WebSocketMessage> outgoing = sink.asFlux()
+                .mergeWith(Flux.interval(Duration.ofSeconds(30))
+                        .map(tick -> "{\"type\":\"ping\"}"))
                 .map(session::textMessage);
 
-        // Por simplicidad, no procesamos mensajes recibidos del cliente
-        return session.send(outgoingMessages);
+        Mono<Void> input = session.receive()
+                .doFinally(signal -> {
+                    sessionSinks.remove(sessionId);
+                    log.info("❌ Cliente {} dejó de recibir actualizaciones de comentarios", sessionId);
+                })
+                .then();
+
+        return session.send(outgoing).and(input);
     }
 
-    // Métodos para publicar cada tipo (envía JSON con campo "type" para identificar)
-
+    // ---------------- Métodos de publicación ---------------- //
     public Mono<Void> publishComment(Comment comment) {
         return publishGeneric("comment", comment);
     }
@@ -87,27 +85,10 @@ public class CommentWebSocketHandler implements WebSocketHandler {
             root.set("data", objectMapper.valueToTree(data));
             String json = objectMapper.writeValueAsString(root);
 
-            // Envío a todos sinks de ese tipo (puedes mejorar según tu lógica)
-            Map<String, Sinks.Many<String>> targetMap = switch (type) {
-                case "comment" -> commentSinks;
-                case "reaction" -> reactionSinks;
-                case "post" -> postSinks;
-                case "from" -> fromSinks;
-                default -> null;
-            };
+            sessionSinks.values().forEach(sink -> sink.tryEmitNext(json));
 
-            if (targetMap == null) {
-                log.error("Tipo desconocido para publicar: {}", type);
-                return Mono.empty();
-            }
+            log.info("📢 Notificando [{}] a {} clientes", type, sessionSinks.size());
 
-            // Si no hay sinks aún, creamos uno para broadcast
-            if (targetMap.isEmpty()) {
-                targetMap.put("all", Sinks.many().multicast().onBackpressureBuffer());
-            }
-
-            targetMap.values().forEach(sink -> sink.tryEmitNext(json));
-            log.info("🔔 Notificando nuevo evento WebSocket Tipo: [{}], Contenido: {}", type, json);
         } catch (JsonProcessingException e) {
             log.error("Error serializando evento WS tipo {}", type, e);
         }

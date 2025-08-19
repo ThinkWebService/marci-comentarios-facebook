@@ -5,11 +5,13 @@ import com.marcicomentariosfacebook.client.LHIA.service.ApiLhiaService;
 import com.marcicomentariosfacebook.client.LHIA.service.MejoraService;
 import com.marcicomentariosfacebook.dtos.CommentRequest;
 import com.marcicomentariosfacebook.dtos.request.RespuestaIARequest;
+import com.marcicomentariosfacebook.exception.ConflictException;
 import com.marcicomentariosfacebook.model.*;
 import com.marcicomentariosfacebook.services.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +32,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 @Slf4j
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api")//ApiCommentsFacebook
 @RequiredArgsConstructor
 public class APIController {
 
@@ -43,6 +45,7 @@ public class APIController {
     private final ApiLhiaService apiLhiaService;
     private final PlantillaService plantillaService;
     private final MejoraService mejoraService;
+    private final PlantillaTypeService plantillaTypeService;
 
     @GetMapping("page")
     public Mono<Page> getPages() {
@@ -117,18 +120,64 @@ public class APIController {
                 .map(ResponseEntity::ok);
     }
 
-    @GetMapping("sugerencia/plantillas")
-    public Flux<Plantilla> getPlantilla() {
-        return plantillaService.findAll();
-    }
-
-    // Actualizar estado de auto_answered en un Post
-    @PostMapping("posts/auto-answered/{post_id}")
+    @PostMapping("/posts/auto-answered/{post_id}")
     public Mono<ResponseEntity<Post>> updateAutoAnswered(
             @PathVariable String post_id,
             @RequestParam boolean auto_answered) {
         return postService.setAutoanswered(post_id, auto_answered)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    // ---------------- PLANTILLAS ----------------
+
+    // Obtener todas las plantillas
+    @GetMapping("/plantillas")
+    public Flux<Plantilla> getPlantillas() {
+        return plantillaService.findAll();
+    }
+
+    // Guardar o actualizar una plantilla
+    @PostMapping("/plantilla/save")
+    public Mono<ResponseEntity<Plantilla>> savePlantilla(@Valid @RequestBody Plantilla plantilla) {
+        return plantillaService.save(plantilla)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    }
+
+    // Eliminar una plantilla por ID
+    @DeleteMapping("/plantilla/{id}")
+    public Mono<ResponseEntity<Boolean>> deletePlantilla(@PathVariable Long id) {
+        return plantillaService.deleteById(id)
+                .then(Mono.just(ResponseEntity.ok(true))) // devuelve true después de eliminar
+                .onErrorReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false));
+    }
+
+
+    // ---------------- TIPOS DE PLANTILLA ----------------
+
+    // Guardar o actualizar un tipo de plantilla
+    @PostMapping("/plantilla-type/save")
+    public Mono<ResponseEntity<PlantillaType>> savePlantillaType(@Valid @RequestBody PlantillaType plantillaType) {
+        return plantillaTypeService.save(plantillaType)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    }
+
+    // Eliminar un tipo de plantilla por ID
+    @DeleteMapping("/plantilla-type/{id}")
+    public Mono<ResponseEntity<Boolean>> deletePlantillaType(@PathVariable Long id) {
+        return plantillaTypeService.deleteById(id)
+                .map(deleted -> ResponseEntity.ok(true))
+                .onErrorResume(ConflictException.class, e ->
+                        Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).body(false))
+                )
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    // Obtener todos los tipos de plantilla
+    @GetMapping("/plantilla-types")
+    public Flux<PlantillaType> getAllPlantillaTypes() {
+        return plantillaTypeService.findAll();
     }
 }
