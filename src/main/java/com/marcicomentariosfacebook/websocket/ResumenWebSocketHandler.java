@@ -78,7 +78,7 @@ public class ResumenWebSocketHandler implements WebSocketHandler {
         try {
             String json = mapper.writeValueAsString(resumenes);
             sessionSinks.values().forEach(sink -> sink.tryEmitNext(json));
-            log.info("📢 Enviando resumen a {} clientes", sessionSinks.size());
+            //log.info("📢 Enviando resumen a {} clientes", sessionSinks.size());
             return Mono.empty();
         } catch (Exception e) {
             log.error("Error enviando resumen", e);
