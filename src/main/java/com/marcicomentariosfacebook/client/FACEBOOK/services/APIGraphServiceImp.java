@@ -1,10 +1,7 @@
 package com.marcicomentariosfacebook.client.FACEBOOK.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbCommentsReactionsResp;
-import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPageResp;
-import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPostsResp;
-import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbSendCommentResponse;
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.*;
 import com.marcicomentariosfacebook.client.FACEBOOK.models.CommentsReactionsData;
 import com.marcicomentariosfacebook.maper.FacebookMapperAttachments;
 import com.marcicomentariosfacebook.dtos.model.Attachment;
@@ -173,6 +170,35 @@ public class APIGraphServiceImp implements APIGraphService{
                 .onErrorResume(e -> {
                     log.error("❌ Error eliminando comentario", e);
                     return Mono.just(false);
+                });
+    }
+
+    @Override
+    public Mono<String> getResourceVideo(String postId) {
+        String URL = env.getProperty("facebook.api.get.source.video").replace("{post_id}", postId);
+        String TOKEN = env.getProperty("facebook.api.bearer.token");
+
+        log.info("GET FACEBOOK -> ATTACHMENT (VIDEO RESOURCE): {}", URL);
+        return webClient
+                .build()
+                .get()
+                .uri(URL)
+                .header("Authorization", "Bearer " + TOKEN)
+                .retrieve()
+                .bodyToMono(AttachmentResponse.class)
+                .map(response -> {
+                    if (response.getAttachments() != null
+                            && response.getAttachments().getData() != null
+                            && !response.getAttachments().getData().isEmpty()) {
+                        return response.getAttachments().getData().get(0).getMedia().getSource();
+                    } else {
+                        log.warn("No attachments or media source found for postId: {}", postId);
+                        return null;
+                    }
+                })
+                .onErrorResume(e -> {
+                    log.error("❌ Error al intentar obtener resource del post", e);
+                    return Mono.empty();
                 });
     }
 }

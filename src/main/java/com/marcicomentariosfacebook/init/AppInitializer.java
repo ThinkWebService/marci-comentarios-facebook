@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import org.springframework.r2dbc.core.DatabaseClient;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -74,6 +75,20 @@ public class AppInitializer {
                 .flatMap(pageService::save)
                 .flatMap(savedPage -> apiGraphService.getPosts()
                         .flatMapMany(mapperPosts::postsFacebookToPost)
+                        .concatMap(post -> {
+                            if ("added_video".equals(post.getStatus_type())) {
+                                return apiGraphService.getResourceVideo(post.getId())
+                                        .map(videoUrl -> {
+                                            if (videoUrl != null) {
+                                                post.setFull_picture(videoUrl);
+                                            }
+                                            return post;
+                                        })
+                                        .defaultIfEmpty(post);
+                            } else {
+                                return Mono.just(post);
+                            }
+                        })
                         .concatMap(postService::save)
                         .concatMap(savedPost -> apiGraphService.getCommentsReactionsByPostId(savedPost.getId())
                                 .flatMapMany(response -> mapperCommentsReactions.mapFroms(response)

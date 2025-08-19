@@ -39,4 +39,11 @@ public class FromServiceImp implements FromService {
     public Flux<From> findAll() {
         return fromRepository.findAll();
     }
+
+    @Override
+    public Mono<String> getUserNameByFromId(String id) {
+        return Mono.justOrEmpty(id)
+                .flatMap(fromRepository::findById)
+                .map(From::getName);
+    }
 }

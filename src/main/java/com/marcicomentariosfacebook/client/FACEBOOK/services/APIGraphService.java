@@ -25,5 +25,7 @@ public interface APIGraphService {
 
     Mono<Boolean> deleteComment(String commentId);
 
+    Mono<String> getResourceVideo(String postId);
+
 
 }

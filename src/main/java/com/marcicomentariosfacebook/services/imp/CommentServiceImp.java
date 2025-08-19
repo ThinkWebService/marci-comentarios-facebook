@@ -26,29 +26,27 @@ public class CommentServiceImp implements CommentService {
     private final APIGraphService apiGraphService;
     private final ApiLhiaService apiLhiaService;
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
-    private final CommentWebSocketHandler commentWebSocketHandler;
+    private final FromServiceImp fromServiceImp;
 
     @Override
     public Mono<Comment> save(Comment comment) {
         return commentRepository.findById(comment.getId())
                 .map(existing -> {
-                    // Asignar 'add' si ambos son null
+                    // ----- VERB LOGIC -----
                     if (comment.getVerb() == null && existing.getVerb() == null) {
                         comment.setVerb("add");
-
-                    } else{
-                        // CASO ESPECIAL: comentarios que parecen editados
-                        // No se sobreescribe "add" en comentarios "editados manualmente"
-                        // En realidad, no se modificó el mismo comentario, sino que se creó uno nuevo
-                        // para simular la edición. Esto evita falsos sobrescritos de "add".
-                        if(existing.getPreviousVersionId() != null && "edited".equals(existing.getVerb())){
-                            comment.setVerb("edited");
-                        }
+                    } else if (comment.getVerb() == null) {
+                        comment.setVerb(existing.getVerb()); // conservar el existente
+                    } else if ("add".equals(comment.getVerb()) && "edited".equals(existing.getVerb())) {
+                        comment.setVerb("edited"); // preservar edición previa
                     }
+                    // En cualquier otro caso, se mantiene el verb nuevo tal como viene
 
-                    // Asignar FACEBOOK si ambos son null
+                    // ----- RESPONSE TYPE LOGIC -----
                     if (comment.getResponse_type() == null && existing.getResponse_type() == null) {
                         comment.setResponse_type(ResponseType.FACEBOOK);
+                    } else if (comment.getResponse_type() == null) {
+                        comment.setResponse_type(existing.getResponse_type());
                     }
 
                     return existing.mergeNonNull(comment);
@@ -65,6 +63,15 @@ public class CommentServiceImp implements CommentService {
                             }
                             return r2dbcEntityTemplate.insert(Comment.class).using(comment);
                         })
+                )
+                // Setear el username antes de devolver el comment guardado
+                .flatMap(savedComment ->
+                        fromServiceImp.getUserNameByFromId(savedComment.getFrom_id())
+                                .defaultIfEmpty("")  // Por si no se encuentra username
+                                .map(username -> {
+                                    savedComment.setFrom_name(username);
+                                    return savedComment;
+                                })
                 );
     }
 
@@ -91,10 +98,18 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public Flux<Comment> findAll() {
-        return commentRepository.findAll();
+        return commentRepository.findAll()
+                .flatMap(comment ->
+                        fromServiceImp.getUserNameByFromId(comment.getFrom_id())
+                                .defaultIfEmpty("")  // cadena vacía si no hay nombre
+                                .map(username -> {
+                                    comment.setFrom_name(username);
+                                    return comment;
+                                })
+                );
     }
 
-        @Override
+    @Override
         public Mono<Void> responderComentarioAutomatico(String parent_id, String parent_message) {
             return apiLhiaService.sendMesssageToLhia(parent_message)
                     // 1. OBTENER RESPUESTA DE LHIA
@@ -149,7 +164,7 @@ public class CommentServiceImp implements CommentService {
                         apiGraphService.deleteComment(comment_id)
                                 .flatMap(eliminado -> {
                                     if (Boolean.TRUE.equals(eliminado)) {
-                                        // comment.setVerb("REMOVE"); // ya se actualiza con evento
+                                        comment.setVerb("remove"); // ya se actualiza con evento
                                         comment.setAgent_user(agent_username);
                                         return commentRepository.save(comment);
                                     }

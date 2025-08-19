@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDateTime;
@@ -29,7 +30,11 @@ public class Comment {
     private String postId;
     private ResponseType response_type;
     @Column("previous_version_id")
-    private String previousVersionId;      // versionamiento, apunta a la versión anterior
+    private String previousVersionId;     // versionamiento, apunta a la versión anterior
+
+    // 🔹 Campo adicional solo para uso en la vista/DTO, no se guarda en DB
+    @Transient
+    private String from_name;
 
     public Comment mergeNonNull(Comment other) {
         CommentBuilder builder = this.toBuilder();

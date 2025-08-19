@@ -31,8 +31,14 @@ public class MapperPost {
             fullPicture = fbPostUrl;
         }
 
-        // permalink_url: preferimos link, sino construimos URL de FB
-        String permalinkUrl = value.getLink() != null ? value.getLink() : fbPostUrl;
+        // permalink_url: si es video y tiene videoId usamos https://www.facebook.com/reel/{videoId}
+        String permalinkUrl;
+        if ("video".equals(value.getItem()) && value.getVideoId() != null && !value.getVideoId().isEmpty()) {
+            permalinkUrl = "https://www.facebook.com/reel/" + value.getVideoId();
+        } else {
+            // para otros casos, preferimos link, sino fbPostUrl
+            permalinkUrl = value.getLink() != null ? value.getLink() : fbPostUrl;
+        }
 
         // Construir status concatenando verb + item
         String status = null;

@@ -19,7 +19,7 @@ public class EventoHandlerFactory {
         return switch (item) {
             case "comment" -> commentHandler;
             case "reaction" -> reactionHandler;
-            case "photo", "status" -> postHandler;
+            case "photo", "status", "video" -> postHandler;
             default -> null;
         };
     }

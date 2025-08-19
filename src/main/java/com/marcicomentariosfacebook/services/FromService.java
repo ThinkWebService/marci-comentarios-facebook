@@ -13,4 +13,6 @@ public interface FromService {
     Mono<From> findById(String id);
 
     Flux<From> findAll();
+
+    Mono<String> getUserNameByFromId(String fromId);
 }
