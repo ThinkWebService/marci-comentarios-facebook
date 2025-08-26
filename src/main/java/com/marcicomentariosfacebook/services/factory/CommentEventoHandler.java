@@ -122,17 +122,28 @@ public class CommentEventoHandler implements EventoHandler {
                                 return Mono.empty();
                             }
 
-                            // Verificar que el post exista y tenga auto_answered = true
                             return postService.findById(savedComment.getPostId())
-                                    .filter(Post::isAuto_answered) // Solo si está habilitado autorespuesta
-                                    .flatMap(post -> commentService.responderComentarioAutomatico(
-                                            savedComment.getId(),
-                                            savedComment.getMessage()
-                                    ))
-                                    .switchIfEmpty(Mono.fromRunnable(() ->
+                                    .flatMap(post -> {
+                                        if (!post.getAuto_answered()) {
                                             log.info("⛔ No se auto-responde el comentario [{}] porque el post [{}] no tiene auto_answered=true",
-                                                    savedComment.getId(), savedComment.getPostId())
+                                                    savedComment.getId(), savedComment.getPostId());
+                                            return Mono.empty();
+                                        }
+
+                                        // Aquí sí está habilitado autorespuesta
+                                        return commentService.responderComentarioAutomatico(
+                                                savedComment.getId(),
+                                                savedComment.getMessage()
+                                        ).switchIfEmpty(Mono.fromRunnable(() ->
+                                                log.warn("⚠️ No se auto-responde el comentario [{}] porque LHIA no generó respuesta",
+                                                        savedComment.getId())
+                                        ));
+                                    })
+                                    .switchIfEmpty(Mono.fromRunnable(() ->
+                                            log.info("⛔ Post [{}] no encontrado para comentario [{}]",
+                                                    savedComment.getPostId(), savedComment.getId())
                                     ));
+
                         }))
         );
     }

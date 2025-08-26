@@ -22,15 +22,10 @@ public class PostServiceImp implements PostService {
 
     @Override
     public Mono<Post> save(Post post) {
-        post.setVerb("add"); // marcar como add
-        return postRepository.existsById(post.getId())
-                .flatMap(exists -> {
-                    if (exists) {
-                        return postRepository.save(post);
-                    } else {
-                        return r2dbcEntityTemplate.insert(Post.class).using(post);
-                    }
-                });
+        return postRepository.findById(post.getId())
+                .map(existing -> existing.mergeNonNull(post))
+                .flatMap(postRepository::save)
+                .switchIfEmpty(r2dbcEntityTemplate.insert(Post.class).using(post));
     }
 
     @Override

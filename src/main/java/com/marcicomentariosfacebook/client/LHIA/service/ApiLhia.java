@@ -50,14 +50,11 @@ public class ApiLhia implements ApiLhiaService {
 	@Override
 	public Mono<String> sendMesssageToLhia(String message) {
 		String urlRespuesta = env.getProperty("lhia.request.url");
-		log.info("Enviando mensaje a LHIA: {}", message);
+		log.info("Pregunta a LHIA: {}", message);
 
 		// Crear objeto de request local
 		RequestQuestionLhia rql = new RequestQuestionLhia();
-		rql.setMessage(message);
-		rql.setDescripcion("INFORMATIVO");
-		rql.setUsuario("INFORMATIVO");
-		rql.setIdentificador("1dcfa109-b307-4fea-9483-03855cf81451");
+		rql.setQuestion(message);
 
 		return getToken().flatMap(token -> {
 			if (token == null || token.isEmpty()) {
@@ -76,10 +73,19 @@ public class ApiLhia implements ApiLhiaService {
 					.retrieve()
 					.bodyToMono(ResponseLhia.class)
 					.map(ResponseLhia::getRespuesta)
+					.flatMap(res -> {
+						if (res == null || res.isBlank()) {
+							log.info("LHIA NO encontró una respuesta");
+							return Mono.empty();
+						}
+						log.info("Respuesta de LHIA: {}", message);
+						return Mono.just(res);
+					})
 					.onErrorResume(e -> {
 						log.error("Error al enviar mensaje a LHIA: {}", e.getMessage());
 						return Mono.empty();
 					});
 		});
 	}
+
 }

@@ -8,10 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestQuestionLhia {
-	private String message;
-	private String usuario;
-	private String descripcion;
-	private String identificador;
-	private String idPlatform;
-	private String platform;
+	private String question;
 }
