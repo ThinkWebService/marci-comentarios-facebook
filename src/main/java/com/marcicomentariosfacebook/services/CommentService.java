@@ -2,8 +2,6 @@ package com.marcicomentariosfacebook.services;
 
 import com.marcicomentariosfacebook.dtos.CommentRequest;
 import com.marcicomentariosfacebook.model.Comment;
-import com.marcicomentariosfacebook.model.ResponseType;
-import com.marcicomentariosfacebook.services.factory.CommentEventoHandler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

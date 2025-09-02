@@ -3,8 +3,8 @@ package com.marcicomentariosfacebook.client.FACEBOOK.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.*;
 import com.marcicomentariosfacebook.client.FACEBOOK.models.CommentsReactionsData;
-import com.marcicomentariosfacebook.maper.FacebookMapperAttachments;
 import com.marcicomentariosfacebook.dtos.model.Attachment;
+import com.marcicomentariosfacebook.maper.FacebookMapperAttachments;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class APIGraphServiceImp implements APIGraphService{
+public class APIGraphServiceImp implements APIGraphService {
 
     private final WebClient.Builder webClient;
     private final Environment env;
@@ -201,4 +201,37 @@ public class APIGraphServiceImp implements APIGraphService{
                     return Mono.empty();
                 });
     }
+
+    @Override
+    public Mono<PostInfoResponse> getPostInfoFromMeta(String postId) {
+        String URL = env.getProperty("facebook.api.get.post.info").replace("{post_id}", postId);
+        String TOKEN = env.getProperty("facebook.api.bearer.token");
+
+        log.info("GET FACEBOOK -> POST_INFO: {}", URL);
+
+        return webClient
+                .build()
+                .get()
+                .uri(URL)
+                .header("Authorization", "Bearer " + TOKEN)
+                .exchangeToMono(response -> {
+                    if (response.statusCode().is2xxSuccessful()) {
+                        return response.bodyToMono(PostInfoResponse.class)
+                                .doOnNext(postInfo -> log.info("post_info obtenido de Facebook: {}", postInfo));
+                    }
+                    else {
+                        return response.bodyToMono(String.class)
+                                .flatMap(body -> {
+                                    if (body.contains("Object does not exist")) {
+                                        log.warn("⚠️ Post no existe en Facebook: {}", postId);
+                                        return Mono.empty();  // Retorna vacío para indicar "no existe"
+                                    } else {
+                                        log.error("❌ Error al obtener post {}: {}", postId, body);
+                                        return Mono.empty();
+                                    }
+                                });
+                    }
+                });
+    }
+
 }

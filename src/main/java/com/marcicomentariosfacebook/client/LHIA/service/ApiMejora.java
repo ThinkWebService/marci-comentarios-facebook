@@ -2,12 +2,10 @@ package com.marcicomentariosfacebook.client.LHIA.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcicomentariosfacebook.client.LHIA.TokenProperties;
-import com.marcicomentariosfacebook.client.LHIA.dto.*;
+import com.marcicomentariosfacebook.client.LHIA.dto.ResponseQuestionLhia;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,7 +13,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service

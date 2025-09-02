@@ -3,6 +3,7 @@ package com.marcicomentariosfacebook.client.FACEBOOK.services;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbCommentsReactionsResp;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPageResp;
 import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.FbPostsResp;
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.PostInfoResponse;
 import com.marcicomentariosfacebook.dtos.model.Attachment;
 import reactor.core.publisher.Mono;
 
@@ -27,5 +28,6 @@ public interface APIGraphService {
 
     Mono<String> getResourceVideo(String postId);
 
+    Mono<PostInfoResponse> getPostInfoFromMeta(String postId);
 
 }

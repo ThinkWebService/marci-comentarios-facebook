@@ -1,6 +1,8 @@
 package com.marcicomentariosfacebook.services.factory;
 
+import com.marcicomentariosfacebook.client.FACEBOOK.services.APIGraphService;
 import com.marcicomentariosfacebook.dtos.WebhookPayload;
+import com.marcicomentariosfacebook.model.Post;
 import com.marcicomentariosfacebook.services.EventoHandler;
 import com.marcicomentariosfacebook.services.PostService;
 import lombok.RequiredArgsConstructor;
@@ -8,53 +10,57 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import com.marcicomentariosfacebook.utils.maper.events.MapperPost;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PostEventoHandler implements EventoHandler {
 
     private final PostService postService;
-    private final MapperPost mapperPost;
+    private final APIGraphService apiGraphService;
 
     @Override
     public Mono<Void> manejar(String verb, WebhookPayload.Value value) {
-        switch (verb) {
-            case "add":
-                return manejarAdd(value);       // Guarda posts nuevos
-            case "edited":
-                return manejarEdited(value);    // Edita posts o elimina si no hay contenido
-            default:
+        return switch (verb) {
+            case "add", "edited" -> getPostInfoAndUpdate(value).then();
+            case "remove" -> postService.eliminar(value.getPost_id()).then();
+            default -> {
                 log.warn("[{}] Acción no manejada para post: {}", verb.toUpperCase(), verb);
-                return Mono.empty();
-        }
+                yield Mono.empty();
+            }
+        };
     }
 
-    private Mono<Void> manejarAdd(WebhookPayload.Value value) {
-        log.info("[ADD] Nuevo post recibido: {}", value);
+    private Mono<Post> getPostInfoAndUpdate(WebhookPayload.Value value) {
+        return apiGraphService.getPostInfoFromMeta(value.getPost_id())
+                .flatMap(postInfo -> {
+                    // Si Facebook devolvió info, actualizar/guardar normalmente
+                    Post post = new Post();
+                    post.setId(postInfo.getId());
+                    post.setMessage(postInfo.getMessage());
+                    post.setFull_picture(postInfo.getFull_picture());
+                    post.setPermalink_url(postInfo.getPermalink_url());
+                    post.setCreated_time(postInfo.getCreated_time());
+                    post.setUpdated_time(postInfo.getUpdated_time());
+                    post.setStory(postInfo.getStory());
+                    post.setStatus_type(postInfo.getStatus_type());
+                    post.setPublished(postInfo.getPublished());
+                    post.setPage_id(value.getFrom().getId());
+                    post.setVerb(value.getVerb());
 
-        return mapperPost.mapValueToPost(value)
-                .flatMap(postService::save)   // Guardar en BD
-                .then();
-    }
-
-    private Mono<Void> manejarEdited(WebhookPayload.Value value) {
-        log.info("[EDITED] Post editado: {}", value);
-
-        // Detectar post eliminado (sin contenido visible)
-        boolean isDeleted = value.getMessage() == null && value.getLink() == null
-                && (value.getPhotos() == null || value.getPhotos().isEmpty());
-
-        if (isDeleted) {
-            log.info("⚠️ Post aparentemente eliminado según webhook: {}", value.getPost_id());
-            return postService.eliminar(value.getPost_id())  // Marcar/guardar como eliminado
-                    .then();
-        }
-
-        // Post realmente editado
-        return mapperPost.mapValueToPost(value)
-                .flatMap(post -> postService.editar(post))
-                .then();
+                    return postService.save(post);
+                })
+                .switchIfEmpty(
+                        // Si el post no existe en Facebook
+                        postService.findById(value.getPost_id())
+                                .flatMap(existingPost -> {
+                                    // marcar como eliminado en BD
+                                    log.info("Marcando post como remove en BD: {}", value.getPost_id());
+                                    return postService.eliminar(value.getPost_id());
+                                })
+                )
+                .onErrorResume(e -> {
+                    log.error("❌ Error obteniendo info o guardando post {}", value.getPost_id(), e);
+                    return Mono.empty();
+                });
     }
 }

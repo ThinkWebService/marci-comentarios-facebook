@@ -78,7 +78,7 @@ public class ApiLhia implements ApiLhiaService {
 							log.info("LHIA NO encontró una respuesta");
 							return Mono.empty();
 						}
-						log.info("Respuesta de LHIA: {}", message);
+						//log.info("Respuesta de LHIA: {}", message);
 						return Mono.just(res);
 					})
 					.onErrorResume(e -> {
@@ -87,5 +87,4 @@ public class ApiLhia implements ApiLhiaService {
 					});
 		});
 	}
-
 }

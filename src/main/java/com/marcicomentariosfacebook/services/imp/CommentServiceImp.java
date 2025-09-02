@@ -7,7 +7,6 @@ import com.marcicomentariosfacebook.model.Comment;
 import com.marcicomentariosfacebook.model.ResponseType;
 import com.marcicomentariosfacebook.repositories.CommentRepository;
 import com.marcicomentariosfacebook.services.CommentService;
-import com.marcicomentariosfacebook.websocket.CommentWebSocketHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -29,7 +28,7 @@ public class Post {
     private String page_id;
     @Builder.Default
     private String verb = "add";
-    private Boolean auto_answered; // <-- wrapper para permitir null
+    private Boolean auto_answered;
 
     public Post mergeNonNull(Post other) {
         PostBuilder builder = this.toBuilder();

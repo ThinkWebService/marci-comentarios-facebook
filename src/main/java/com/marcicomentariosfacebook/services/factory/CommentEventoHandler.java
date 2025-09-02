@@ -3,7 +3,6 @@ package com.marcicomentariosfacebook.services.factory;
 import com.marcicomentariosfacebook.dtos.WebhookPayload;
 import com.marcicomentariosfacebook.model.Comment;
 import com.marcicomentariosfacebook.model.From;
-import com.marcicomentariosfacebook.model.Post;
 import com.marcicomentariosfacebook.model.ResponseType;
 import com.marcicomentariosfacebook.services.CommentService;
 import com.marcicomentariosfacebook.services.EventoHandler;

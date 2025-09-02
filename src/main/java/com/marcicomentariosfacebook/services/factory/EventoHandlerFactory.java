@@ -1,9 +1,6 @@
 package com.marcicomentariosfacebook.services.factory;
 
 import com.marcicomentariosfacebook.services.EventoHandler;
-import com.marcicomentariosfacebook.services.factory.CommentEventoHandler;
-import com.marcicomentariosfacebook.services.factory.PostEventoHandler;
-import com.marcicomentariosfacebook.services.factory.ReactionEventoHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +16,7 @@ public class EventoHandlerFactory {
         return switch (item) {
             case "comment" -> commentHandler;
             case "reaction" -> reactionHandler;
-            case "photo", "status", "video" -> postHandler;
+            case "post","photo", "status", "video" -> postHandler;
             default -> null;
         };
     }

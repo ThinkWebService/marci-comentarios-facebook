@@ -23,7 +23,7 @@ public class MapperPosts {
                         .updated_time(post.getUpdated_time())
                         .story(post.getStory())
                         .status_type(post.getStatus_type())
-                        .published(post.isPublished())
+                        .published(post.getPublished())
                         .page_id(fbPostsResp.getId())
                         .build()
                 );

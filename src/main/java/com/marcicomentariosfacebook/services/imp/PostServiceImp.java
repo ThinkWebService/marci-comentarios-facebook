@@ -6,11 +6,13 @@ import com.marcicomentariosfacebook.services.CommentService;
 import com.marcicomentariosfacebook.services.PostService;
 import com.marcicomentariosfacebook.websocket.CommentWebSocketHandler;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class PostServiceImp implements PostService {
@@ -39,25 +41,11 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public Mono<Post> editar(Post post) {
-        post.setVerb("edited"); // marcar como edited
-        return postRepository.findById(post.getId())
-                .flatMap(existing -> {
-                    existing.setMessage(post.getMessage());
-                    existing.setFull_picture(post.getFull_picture());
-                    existing.setStatus_type(post.getStatus_type());
-                    existing.setStory(post.getStory());
-                    existing.setUpdated_time(post.getUpdated_time());
-                    existing.setPublished(post.isPublished());
-                    existing.setVerb(post.getVerb());
-                    return postRepository.save(existing);
-                });
-    }
-
-    @Override
     public Mono<Post> eliminar(String postId) {
         return postRepository.findById(postId)
                 .flatMap(existing -> {
+                    log.info("⚠️ Marcando post como remove: {}", existing.getId());
+
                     // Cambiamos el verb del post a "remove"
                     existing.setVerb("remove");
 
@@ -67,6 +55,8 @@ public class PostServiceImp implements PostService {
                                     // Buscamos todos los comentarios asociados a este post
                                     commentService.findByPostId(savedPost.getId())
                                             .flatMap(comment -> {
+                                                log.info("⚠️ Marcando comentario como remove: {} (post {})", comment.getId(), savedPost.getId());
+
                                                 // Actualizamos el verb de cada comentario
                                                 comment.setVerb("remove");
                                                 return commentService.save(comment)
