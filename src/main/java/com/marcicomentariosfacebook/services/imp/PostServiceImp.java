@@ -1,5 +1,7 @@
 package com.marcicomentariosfacebook.services.imp;
 
+import com.marcicomentariosfacebook.client.FACEBOOK.DTOS.PostInfoResponse;
+import com.marcicomentariosfacebook.client.FACEBOOK.services.APIGraphService;
 import com.marcicomentariosfacebook.model.Post;
 import com.marcicomentariosfacebook.repositories.PostRepository;
 import com.marcicomentariosfacebook.services.CommentService;
@@ -7,6 +9,7 @@ import com.marcicomentariosfacebook.services.PostService;
 import com.marcicomentariosfacebook.websocket.CommentWebSocketHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,6 +24,7 @@ public class PostServiceImp implements PostService {
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
     private final CommentService commentService;
     private final CommentWebSocketHandler commentWebSocketHandler;
+    private final APIGraphService apiGraphService;
 
     @Override
     public Mono<Post> save(Post post) {
@@ -76,4 +80,39 @@ public class PostServiceImp implements PostService {
                     return postRepository.save(existing);
                 });
     }
+
+    @Override
+    public Flux<Post> setAutoansweredAll(boolean auto_answered) {
+        return postRepository.updateAutoAnsweredAll(auto_answered)
+                .thenMany(postRepository.findAll());
+    }
+
+    @Override
+    public Mono<Post> savePostIfNotExist(String post_id, String page_id) {
+        return apiGraphService.getPostInfoFromMeta(post_id)
+                .flatMap(postInfo -> {
+                    // Si Facebook devolvió info, actualizar/guardar normalmente
+                    Post post = new Post();
+                    post.setId(postInfo.getId());
+                    post.setMessage(postInfo.getMessage());
+                    post.setFull_picture(postInfo.getFull_picture());
+                    post.setPermalink_url(postInfo.getPermalink_url());
+                    post.setCreated_time(postInfo.getCreated_time());
+                    post.setUpdated_time(postInfo.getUpdated_time());
+                    post.setStory(postInfo.getStory());
+                    post.setStatus_type(postInfo.getStatus_type());
+                    post.setPublished(postInfo.getPublished());
+                    post.setPage_id(page_id);
+                    post.setVerb("add");
+                    return save(post);
+                })
+                .onErrorResume(e -> {
+                    log.error("❌ Error obteniendo info o guardando post {}",post_id, e);
+                    return Mono.empty();
+                });
+
+    }
+
+
+
 }

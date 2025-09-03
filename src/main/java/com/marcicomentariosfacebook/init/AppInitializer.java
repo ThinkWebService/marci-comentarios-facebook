@@ -40,9 +40,6 @@ public class AppInitializer {
     private final MapperCommentsReactions mapperCommentsReactions;
     private final FromService fromService;
     private final CommentService commentService;
-    private final ReactionService reactionService;
-
-    private final PlantillaTypeService plantillaTypeService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initialize() {
@@ -75,31 +72,15 @@ public class AppInitializer {
                 .flatMap(pageService::save)
                 .flatMap(savedPage -> apiGraphService.getPosts()
                         .flatMapMany(mapperPosts::postsFacebookToPost)
-                        .concatMap(post -> {
-                            if ("added_video".equals(post.getStatus_type())) {
-                                return apiGraphService.getResourceVideo(post.getId())
-                                        .map(videoUrl -> {
-                                            if (videoUrl != null) {
-                                                post.setFull_picture(videoUrl);
-                                            }
-                                            return post;
-                                        })
-                                        .defaultIfEmpty(post);
-                            } else {
-                                return Mono.just(post);
-                            }
-                        })
                         .concatMap(postService::save)
                         .concatMap(savedPost -> apiGraphService.getCommentsReactionsByPostId(savedPost.getId())
                                 .flatMapMany(response -> mapperCommentsReactions.mapFroms(response)
                                         .flatMap(fromService::save)
                                         .thenMany(mapperCommentsReactions.mapComments(response)
                                                 .collectList()
-                                                .flatMapMany(commentService::saveAll))
-                                        .thenMany(mapperCommentsReactions.mapReactions(response)
-                                                .flatMap(reactionService::save))))
+                                                .flatMapMany(commentService::saveAll))))
                         .then())
-                .doOnSuccess(v -> log.info("✅ Datos de Facebook cargados y guardados (Posts, Comments, Reactions)"))
+                .doOnSuccess(v -> log.info("✅ Datos de Facebook cargados y guardados (Page, Posts, Comments)"))
                 .block();
     }
 }

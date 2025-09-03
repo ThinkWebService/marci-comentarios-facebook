@@ -129,6 +129,17 @@ public class APIController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/posts/auto-answered-all")
+    public Mono<ResponseEntity<List<Post>>> updateAutoAnsweredAll(
+            @RequestParam boolean auto_answered) {
+
+        return postService.setAutoansweredAll(auto_answered)
+                .collectList()
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+
     // ---------------- PLANTILLAS ----------------
 
     // Obtener todas las plantillas
@@ -180,4 +191,5 @@ public class APIController {
     public Flux<PlantillaType> getAllPlantillaTypes() {
         return plantillaTypeService.findAll();
     }
+
 }
