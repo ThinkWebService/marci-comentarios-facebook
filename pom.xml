@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
-    <artifactId>marci-comentarios-facebook</artifactId>
+    <artifactId>comentarios-facebook</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>marci-comentarios-facebook</name>
     <description>marci-comentarios-facebook</description>
