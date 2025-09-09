@@ -15,7 +15,7 @@ public interface PostRepository extends ReactiveCrudRepository<Post, String> {
     Mono<Integer> updateAutoAnsweredAll(boolean autoAnswered);
 
     // Método para buscar por created_time + status_type (Caso especial cuando hay eventos del mismo post con diferente post_id)
-    @Query("SELECT * FROM post WHERE created_time = :createdTime AND status_type = :statusType AND page_id = :pageId")
+    @Query("SELECT * FROM post WHERE created_time = :createdTime AND status_type = :statusType")
     Mono<Post> findByCreatedTimeAndStatusType(LocalDateTime createdTime, String statusType);
 
 }
