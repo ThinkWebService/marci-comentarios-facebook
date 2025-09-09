@@ -29,9 +29,15 @@ public class PostServiceImp implements PostService {
     @Override
     public Mono<Post> save(Post post) {
         return postRepository.findById(post.getId())
-                .map(existing -> existing.mergeNonNull(post))
-                .flatMap(postRepository::save)
-                .switchIfEmpty(r2dbcEntityTemplate.insert(Post.class).using(post));
+                .flatMap(existing -> {
+                    existing.mergeNonNull(post);
+                    return postRepository.save(existing);
+                })
+                .switchIfEmpty(
+                        postRepository.findByCreatedTimeAndStatusType(post.getCreated_time(), post.getStatus_type())
+                                .flatMap(existing -> Mono.just(existing)) // ya existe, no insertar
+                                .switchIfEmpty(r2dbcEntityTemplate.insert(Post.class).using(post)) // no existe, insertar
+                );
     }
 
     @Override

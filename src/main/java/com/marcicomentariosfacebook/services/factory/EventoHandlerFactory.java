@@ -15,7 +15,7 @@ public class EventoHandlerFactory {
     public EventoHandler getHandler(String item) {
         return switch (item) {
             case "comment" -> commentHandler;
-            case "reaction" -> reactionHandler;
+            // case "reaction" -> reactionHandler; // no se maneja por ahora
             case "post","photo", "status", "video" -> postHandler;
             default -> null;
         };
