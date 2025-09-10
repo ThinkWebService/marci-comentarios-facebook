@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -42,8 +44,10 @@ public class FromServiceImp implements FromService {
 
     @Override
     public Mono<String> getUserNameByFromId(String id) {
-        return Mono.justOrEmpty(id)
-                .flatMap(fromRepository::findById)
-                .map(From::getName);
+        return Mono.justOrEmpty(id)                                // si id es null o vacío, no se llama al repo
+                .flatMap(fromRepository::findById)                // buscamos en repo
+                .map(from -> from.getName() != null ? from.getName() : "")
+                .defaultIfEmpty("");                               // si no encuentra nada, devolvemos ""
     }
+
 }

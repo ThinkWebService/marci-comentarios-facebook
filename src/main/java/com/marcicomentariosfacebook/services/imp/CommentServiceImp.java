@@ -99,8 +99,9 @@ public class CommentServiceImp implements CommentService {
     public Flux<Comment> findAll() {
         return commentRepository.findAll()
                 .flatMap(comment ->
-                        fromServiceImp.getUserNameByFromId(comment.getFrom_id())
-                                .defaultIfEmpty("")  // cadena vacía si no hay nombre
+                        Mono.justOrEmpty(comment.getFrom_id())        // solo si from_id no es null/empty
+                                .flatMap(fromServiceImp::getUserNameByFromId)
+                                .defaultIfEmpty("")                        // si no hay usuario, devolvemos ""
                                 .map(username -> {
                                     comment.setFrom_name(username);
                                     return comment;
